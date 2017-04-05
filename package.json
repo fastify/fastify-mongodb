@@ -1,0 +1,36 @@
+{
+  "name": "fastify-mongodb",
+  "version": "0.1.0",
+  "description": "Fastify MongoDB connection plugin",
+  "main": "index.js",
+  "scripts": {
+    "test": "standard && tap test.js",
+    "mongo": "docker run -p 27017:27017 mongo:3.4.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/fastify/fastify-mongodb.git"
+  },
+  "keywords": [
+    "fastify",
+    "mongo",
+    "mongodb",
+    "database",
+    "connection"
+  ],
+  "author": "Tomas Della Vedova - @delvedor (http://delved.org)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/fastify/fastify-mongodb/issues"
+  },
+  "homepage": "https://github.com/fastify/fastify-mongodb#readme",
+  "devDependencies": {
+    "fastify": "^0.14.0",
+    "standard": "^9.0.2",
+    "tap": "^10.3.1"
+  },
+  "dependencies": {
+    "fastify-plugin": "^0.1.0",
+    "mongodb": "^2.2.25"
+  }
+}
