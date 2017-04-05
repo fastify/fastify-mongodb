@@ -29,9 +29,7 @@ function fastifyMongodb (fastify, options, next) {
 }
 
 function close (fastify, done) {
-  fastify.mongo.db.close(function onClose (err) {
-    done(err)
-  })
+  fastify.mongo.db.close(done)
 }
 
 module.exports = fp(fastifyMongodb, '>=0.13.1')
