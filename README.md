@@ -32,7 +32,7 @@ fastify.get('/user/:id', (req, reply) => {
     col.findOne({ id: req.params.id }, (err, user) => {
       reply.send(user)
     })
-  })
+  }
 })
 
 fastify.listen(3000, err => {
