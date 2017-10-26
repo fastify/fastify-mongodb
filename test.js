@@ -6,14 +6,12 @@ const Fastify = require('fastify')
 const fastifyMongo = require('./index')
 
 test('fastify.mongo should exist', t => {
-  t.plan(5)
+  t.plan(4)
 
   const fastify = Fastify()
 
   fastify.register(fastifyMongo, {
     url: 'mongodb://127.0.0.1'
-  }, err => {
-    t.error(err)
   })
 
   fastify.ready(err => {
@@ -27,14 +25,12 @@ test('fastify.mongo should exist', t => {
 })
 
 test('fastify.mongo.ObjectId should be a mongo ObjectId', t => {
-  t.plan(6)
+  t.plan(5)
 
   const fastify = Fastify()
 
   fastify.register(fastifyMongo, {
     url: 'mongodb://127.0.0.1'
-  }, err => {
-    t.error(err)
   })
 
   fastify.ready(err => {
@@ -55,14 +51,12 @@ test('fastify.mongo.ObjectId should be a mongo ObjectId', t => {
 })
 
 test('fastify.mongo.db should be the mongo database client', t => {
-  t.plan(4)
+  t.plan(3)
 
   const fastify = Fastify()
 
   fastify.register(fastifyMongo, {
     url: 'mongodb://127.0.0.1'
-  }, err => {
-    t.error(err)
   })
 
   fastify.ready(err => {

@@ -25,12 +25,12 @@
   },
   "homepage": "https://github.com/fastify/fastify-mongodb#readme",
   "devDependencies": {
-    "fastify": "^0.17.0",
-    "standard": "^10.0.0",
-    "tap": "^10.3.1"
+    "fastify": "^0.30.2",
+    "standard": "^10.0.3",
+    "tap": "^10.7.2"
   },
   "dependencies": {
-    "fastify-plugin": "^0.1.0",
-    "mongodb": "^2.2.25"
+    "fastify-plugin": "^0.1.1",
+    "mongodb": "^2.2.33"
   }
 }
