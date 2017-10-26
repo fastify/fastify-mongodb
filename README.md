@@ -18,8 +18,6 @@ const fastify = require('fastify')
 
 fastify.register(require('fastify-mongodb'), {
   url: 'mongodb://mongo/db'
-}, err => {
-  if (err) throw err
 })
 
 fastify.get('/user/:id', (req, reply) => {
