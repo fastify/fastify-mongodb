@@ -4,6 +4,7 @@ const t = require('tap')
 const test = t.test
 const Fastify = require('fastify')
 const fastifyMongo = require('./index')
+const url = 'mongodb://127.0.0.1'
 
 test('fastify.mongo should exist', t => {
   t.plan(4)
@@ -11,7 +12,7 @@ test('fastify.mongo should exist', t => {
   const fastify = Fastify()
 
   fastify.register(fastifyMongo, {
-    url: 'mongodb://127.0.0.1'
+    url
   })
 
   fastify.ready(err => {
@@ -30,7 +31,7 @@ test('fastify.mongo.ObjectId should be a mongo ObjectId', t => {
   const fastify = Fastify()
 
   fastify.register(fastifyMongo, {
-    url: 'mongodb://127.0.0.1'
+    url
   })
 
   fastify.ready(err => {
@@ -56,7 +57,7 @@ test('fastify.mongo.db should be the mongo database client', t => {
   const fastify = Fastify()
 
   fastify.register(fastifyMongo, {
-    url: 'mongodb://127.0.0.1'
+    url
   })
 
   fastify.ready(err => {
@@ -71,5 +72,25 @@ test('fastify.mongo.db should be the mongo database client', t => {
 
       fastify.close()
     })
+  })
+})
+
+test('should call connection callback if specified', t => {
+  t.plan(2)
+
+  const fastify = Fastify()
+
+  let called
+
+  fastify.register(fastifyMongo, {
+    url,
+    onConnect: () => (called = true)
+  })
+
+  fastify.ready(err => {
+    t.error(err)
+    t.ok(called)
+
+    fastify.close()
   })
 })

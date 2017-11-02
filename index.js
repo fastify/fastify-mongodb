@@ -10,19 +10,25 @@ function fastifyMongodb (fastify, options, next) {
   const url = options.url
   delete options.url
 
-  MongoClient.connect(url, options, onConnect)
+  const onConnect = options.onConnect
+  delete options.onConnect
 
-  function onConnect (err, db) {
-    if (err) return next(err)
+  MongoClient.connect(url, options, _onConnect)
+
+  function _onConnect (err, db) {
+    if (err) {
+      if (onConnect) onConnect(err)
+      return next(err)
+    }
+
+    if (onConnect) onConnect(null, db)
 
     const mongo = {
       db: db,
       ObjectId: ObjectId
     }
 
-    fastify
-      .decorate('mongo', mongo)
-      .addHook('onClose', close)
+    fastify.decorate('mongo', mongo).addHook('onClose', close)
 
     next()
   }
