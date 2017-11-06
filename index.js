@@ -10,6 +10,9 @@ function fastifyMongodb (fastify, options, next) {
   const url = options.url
   delete options.url
 
+  const name = options.name
+  delete options.name
+
   MongoClient.connect(url, options, onConnect)
 
   function onConnect (err, db) {
@@ -20,16 +23,24 @@ function fastifyMongodb (fastify, options, next) {
       ObjectId: ObjectId
     }
 
-    fastify
-      .decorate('mongo', mongo)
-      .addHook('onClose', close)
+    if (name) {
+      if (!fastify.mongo) {
+        fastify.decorate('mongo', {})
+      }
+
+      fastify.mongo[name] = mongo
+    } else {
+      if (fastify.mongo) {
+        next(new Error('fastify-mongo has already registered'))
+      } else {
+        fastify.mongo = mongo
+      }
+    }
+
+    fastify.addHook('onClose', (fastify, done) => db.close(done))
 
     next()
   }
-}
-
-function close (fastify, done) {
-  fastify.mongo.db.close(done)
 }
 
 module.exports = fp(fastifyMongodb, '>=0.13.1')
