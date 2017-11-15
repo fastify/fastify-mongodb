@@ -14,7 +14,7 @@ npm i fastify-mongodb --save
 Add it to you project with `register` and you are done!  
 You can access the *Mongo* database via `fastify.mongo.db` and *ObjectId* via `fastify.mongo.ObjectId`.
 ```js
-const fastify = require('fastify')
+const fastify = require('fastify')()
 
 fastify.register(require('fastify-mongodb'), {
   url: 'mongodb://mongo/db'
