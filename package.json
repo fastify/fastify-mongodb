@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/fastify/fastify-mongodb#readme",
   "devDependencies": {
-    "fastify": "^0.31.0",
+    "fastify": "^0.35.0",
     "standard": "^10.0.3",
     "tap": "^10.7.2"
   },
