@@ -7,6 +7,22 @@ const MongoClient = MongoDb.MongoClient
 const ObjectId = MongoDb.ObjectId
 
 function fastifyMongodb (fastify, options, next) {
+  if (options.client) {
+    const db = options.client
+    delete options.client
+    const mongo = {
+      db: db,
+      ObjectId: ObjectId
+    }
+    if (options.name) {
+      mongo[options.name] = mongo
+      delete options.name
+    }
+    fastify.decorate('mongo', mongo)
+    fastify.addHook('onClose', (fastify, done) => db.close(done))
+    return next()
+  }
+
   const url = options.url
   delete options.url
 

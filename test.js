@@ -146,3 +146,29 @@ test('fastify.mongo.db should be the mongo database client', t => {
     })
   })
 })
+
+test('accepts a pre-configured mongo database client', t => {
+  t.plan(3)
+
+  const mongodb = require('mongodb')
+  mongodb.MongoClient.connect('mongodb://127.0.0.1/test')
+    .then((db) => {
+      const fastify = Fastify()
+      fastify.register(fastifyMongo, {client: db, name: 'test'})
+
+      fastify.ready(err => {
+        t.error(err)
+
+        const db = fastify.mongo.test.db
+        const col = db.collection('test')
+
+        col.insertOne({ a: 1 }, (err, r) => {
+          t.error(err)
+          t.equal(1, r.insertedCount)
+
+          fastify.close()
+        })
+      })
+    })
+    .catch(t.threw)
+})
