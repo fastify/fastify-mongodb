@@ -11,7 +11,7 @@ Under the hood the official [mongodb](https://github.com/mongodb/node-mongodb-na
 npm i fastify-mongodb --save
 ```
 ## Usage
-Add it to you project with `register` and you are done!
+Add it to your project with `register` and you are done!  
 You can access the *Mongo* database via `fastify.mongo.db` and *ObjectId* via `fastify.mongo.ObjectId`.
 ```js
 const fastify = require('fastify')()
