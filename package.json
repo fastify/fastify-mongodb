@@ -30,7 +30,7 @@
     "tap": "^10.7.2"
   },
   "dependencies": {
-    "fastify-plugin": "^0.1.1",
+    "fastify-plugin": "^0.2.1",
     "mongodb": "^2.2.33"
   }
 }
