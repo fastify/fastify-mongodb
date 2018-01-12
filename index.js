@@ -39,6 +39,8 @@ function fastifyMongodb (fastify, options, next) {
       ObjectId: ObjectId
     }
 
+    fastify.addHook('onClose', (fastify, done) => db.close(done))
+
     if (name) {
       if (!fastify.mongo) {
         fastify.decorate('mongo', {})
@@ -48,12 +50,11 @@ function fastifyMongodb (fastify, options, next) {
     } else {
       if (fastify.mongo) {
         next(new Error('fastify-mongo has already registered'))
+        return
       } else {
         fastify.mongo = mongo
       }
     }
-
-    fastify.addHook('onClose', (fastify, done) => db.close(done))
 
     next()
   }

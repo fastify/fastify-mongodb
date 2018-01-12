@@ -172,3 +172,20 @@ test('accepts a pre-configured mongo database client', t => {
     })
     .catch(t.threw)
 })
+
+test('throw if mongo is already added', t => {
+  t.plan(1)
+
+  const fastify = Fastify()
+  t.tearDown(done => fastify.close(done))
+
+  fastify.register(fastifyMongo, { url: 'mongodb://127.0.0.1' })
+
+  fastify.after(() => {
+    fastify.register(fastifyMongo, { url: 'mongodb://127.0.0.1' })
+  })
+
+  fastify.ready(err => {
+    t.equal(err.message, 'fastify-mongo has already registered')
+  })
+})
