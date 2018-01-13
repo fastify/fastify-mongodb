@@ -12,7 +12,7 @@ npm i fastify-mongodb --save
 ```
 ## Usage
 Add it to your project with `register` and you are done!  
-You can access the *Mongo* database via `fastify.mongo.db` and *ObjectId* via `fastify.mongo.ObjectId`.
+You can access the *Mongo* client via `fastify.mongo.client` and *ObjectId* via `fastify.mongo.ObjectId`.
 ```js
 const fastify = require('fastify')()
 
@@ -21,8 +21,8 @@ fastify.register(require('fastify-mongodb'), {
 })
 
 fastify.get('/user/:id', (req, reply) => {
-  const { db } = fastify.mongo
-  db.collection('users', onCollection)
+  const { client } = fastify.mongo
+  client.db('db').collection('users', onCollection)
 
   function onCollection (err, col) {
     if (err) return reply.send(err)
@@ -35,7 +35,6 @@ fastify.get('/user/:id', (req, reply) => {
 
 fastify.listen(3000, err => {
   if (err) throw err
-  console.log(`server listening on ${fastify.server.address().port}`)
 })
 ```
 
@@ -44,11 +43,11 @@ You may also supply a pre-configured instance of `mongodb.MongoClient`:
 ```js
 const mongodb = require('mongodb')
 mongodb.MongoClient.connect('mongodb://mongo/db')
-  .then((db) => {
+  .then((client) => {
     const fastify = require('fastify')()
 
     fastify.register(require('fastify-mongodb'), {
-      client: db
+      client: client
     })
 
     // ...
@@ -60,8 +59,8 @@ mongodb.MongoClient.connect('mongodb://mongo/db')
   })
 ```
 
-Note: the passed `db` connection will be closed when the Fastify server
-shutsdown.
+Note: the passed `client` connection will be closed when the Fastify server
+shuts down.
 
 ## Acknowledgements
 
