@@ -8,10 +8,10 @@ const ObjectId = MongoDb.ObjectId
 
 function fastifyMongodb (fastify, options, next) {
   if (options.client) {
-    const db = options.client
+    const client = options.client
     delete options.client
     const mongo = {
-      db: db,
+      client: client,
       ObjectId: ObjectId
     }
     if (options.name) {
@@ -19,7 +19,7 @@ function fastifyMongodb (fastify, options, next) {
       delete options.name
     }
     fastify.decorate('mongo', mongo)
-    fastify.addHook('onClose', (fastify, done) => db.close(done))
+    fastify.addHook('onClose', (fastify, done) => client.close(done))
     return next()
   }
 
@@ -31,15 +31,15 @@ function fastifyMongodb (fastify, options, next) {
 
   MongoClient.connect(url, options, onConnect)
 
-  function onConnect (err, db) {
+  function onConnect (err, client) {
     if (err) return next(err)
 
     const mongo = {
-      db: db,
+      client: client,
       ObjectId: ObjectId
     }
 
-    fastify.addHook('onClose', (fastify, done) => db.close(done))
+    fastify.addHook('onClose', (fastify, done) => client.close(done))
 
     if (name) {
       if (!fastify.mongo) {
@@ -60,4 +60,7 @@ function fastifyMongodb (fastify, options, next) {
   }
 }
 
-module.exports = fp(fastifyMongodb, '>=0.13.1')
+module.exports = fp(fastifyMongodb, {
+  fastify: '>=0.39.0',
+  name: 'fastify-mongodb'
+})
