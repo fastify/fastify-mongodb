@@ -17,7 +17,7 @@ test('fastify.mongo should exist', t => {
   fastify.ready(err => {
     t.error(err)
     t.ok(fastify.mongo)
-    t.ok(fastify.mongo.db)
+    t.ok(fastify.mongo.client)
     t.ok(fastify.mongo.ObjectId)
 
     fastify.close()
@@ -50,7 +50,7 @@ test('fastify.mongo.ObjectId should be a mongo ObjectId', t => {
   })
 })
 
-test('fastify.mongo.db should be the mongo database client', t => {
+test('fastify.mongo.client should be the mongo database client', t => {
   t.plan(3)
 
   const fastify = Fastify()
@@ -62,7 +62,7 @@ test('fastify.mongo.db should be the mongo database client', t => {
   fastify.ready(err => {
     t.error(err)
 
-    const db = fastify.mongo.db
+    const db = fastify.mongo.client.db('test')
     const col = db.collection('test')
 
     col.insertOne({ a: 1 }, (err, r) => {
@@ -88,7 +88,7 @@ test('fastify.mongo.test should exist', t => {
     t.error(err)
     t.ok(fastify.mongo)
     t.ok(fastify.mongo.test)
-    t.ok(fastify.mongo.test.db)
+    t.ok(fastify.mongo.test.client)
     t.ok(fastify.mongo.test.ObjectId)
 
     fastify.close()
@@ -122,7 +122,7 @@ test('fastify.mongo.test.ObjectId should be a mongo ObjectId', t => {
   })
 })
 
-test('fastify.mongo.db should be the mongo database client', t => {
+test('fastify.mongo.client should be the mongo database client', t => {
   t.plan(3)
 
   const fastify = Fastify()
@@ -135,7 +135,7 @@ test('fastify.mongo.db should be the mongo database client', t => {
   fastify.ready(err => {
     t.error(err)
 
-    const db = fastify.mongo.test.db
+    const db = fastify.mongo.test.client.db('test')
     const col = db.collection('test')
 
     col.insertOne({ a: 1 }, (err, r) => {
@@ -152,14 +152,14 @@ test('accepts a pre-configured mongo database client', t => {
 
   const mongodb = require('mongodb')
   mongodb.MongoClient.connect('mongodb://127.0.0.1/test')
-    .then((db) => {
+    .then((client) => {
       const fastify = Fastify()
-      fastify.register(fastifyMongo, {client: db, name: 'test'})
+      fastify.register(fastifyMongo, {client: client, name: 'test'})
 
       fastify.ready(err => {
         t.error(err)
 
-        const db = fastify.mongo.test.db
+        const db = fastify.mongo.test.client.db('test')
         const col = db.collection('test')
 
         col.insertOne({ a: 1 }, (err, r) => {
