@@ -9,14 +9,19 @@ const ObjectId = MongoDb.ObjectId
 function fastifyMongodb (fastify, options, next) {
   if (options.client) {
     const client = options.client
-    delete options.client
+
+    const databaseName = options.database
+
     const mongo = {
       client: client,
-      ObjectId: ObjectId
+      ObjectId: ObjectId,
+      dbs: {}
     }
     if (options.name) {
       mongo[options.name] = mongo
-      delete options.name
+    }
+    if (databaseName) {
+      mongo.dbs[databaseName] = client.db(databaseName)
     }
     fastify.decorate('mongo', mongo)
     fastify.addHook('onClose', (fastify, done) => client.close(done))
@@ -29,6 +34,9 @@ function fastifyMongodb (fastify, options, next) {
   const name = options.name
   delete options.name
 
+  const databaseName = options.database
+  delete options.database
+
   MongoClient.connect(url, options, onConnect)
 
   function onConnect (err, client) {
@@ -36,14 +44,19 @@ function fastifyMongodb (fastify, options, next) {
 
     const mongo = {
       client: client,
-      ObjectId: ObjectId
+      ObjectId: ObjectId,
+      dbs: {}
+    }
+
+    if (databaseName) {
+      mongo.dbs[databaseName] = client.db(databaseName)
     }
 
     fastify.addHook('onClose', (fastify, done) => client.close(done))
 
     if (name) {
       if (!fastify.mongo) {
-        fastify.decorate('mongo', {})
+        fastify.decorate('mongo', mongo)
       }
 
       fastify.mongo[name] = mongo
