@@ -31,7 +31,7 @@ test('fastify.mongo should exist', t => {
 })
 
 test('fastify.mongo.dbs.test2 should exist', t => {
-  t.plan(6)
+  t.plan(7)
 
   const fastify = Fastify()
   t.teardown(() => fastify.close())
@@ -48,6 +48,7 @@ test('fastify.mongo.dbs.test2 should exist', t => {
     t.ok(fastify.mongo.ObjectId)
     t.ok(fastify.mongo.dbs)
     t.ok(fastify.mongo.dbs[DATABASE_NAME])
+    t.ok(fastify.mongo.db)
   })
 })
 
@@ -120,7 +121,7 @@ test('fastify.mongo[CLIENT_NAME] should exist', t => {
 })
 
 test('fastify.mongo[CLIENT_NAME].dbs[DATABASE_NAME] should exist', t => {
-  t.plan(9)
+  t.plan(11)
 
   const fastify = Fastify()
   t.tearDown(() => fastify.close())
@@ -136,11 +137,13 @@ test('fastify.mongo[CLIENT_NAME].dbs[DATABASE_NAME] should exist', t => {
     t.ok(fastify.mongo)
     t.ok(fastify.mongo.dbs)
     t.ok(fastify.mongo.dbs[DATABASE_NAME])
+    t.ok(fastify.mongo.db)
     t.ok(fastify.mongo[CLIENT_NAME])
     t.ok(fastify.mongo[CLIENT_NAME].client)
     t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
     t.ok(fastify.mongo[CLIENT_NAME].dbs)
     t.ok(fastify.mongo[CLIENT_NAME].dbs[DATABASE_NAME])
+    t.ok(fastify.mongo[CLIENT_NAME].db)
   })
 })
 
@@ -214,7 +217,7 @@ test('accepts a pre-configured mongo client', t => {
 })
 
 test('accepts a pre-configured mongo client with database', t => {
-  t.plan(5)
+  t.plan(6)
 
   mongodb.MongoClient.connect(MONGODB_URL)
     .then((client) => {
@@ -229,6 +232,7 @@ test('accepts a pre-configured mongo client with database', t => {
           t.ok(fastify.mongo.client)
           t.ok(fastify.mongo.dbs)
           t.ok(fastify.mongo.dbs[DATABASE_NAME])
+          t.ok(fastify.mongo.db)
         })
     })
     .catch(t.threw)
@@ -260,7 +264,7 @@ test('accepts a pre-configured named mongo client', t => {
 })
 
 test('accepts a pre-configured named mongo client with database', t => {
-  t.plan(9)
+  t.plan(11)
 
   mongodb.MongoClient.connect(MONGODB_URL)
     .then((client) => {
@@ -276,10 +280,12 @@ test('accepts a pre-configured named mongo client with database', t => {
         t.ok(fastify.mongo.client)
         t.ok(fastify.mongo.dbs)
         t.ok(fastify.mongo.dbs[DATABASE_NAME])
+        t.ok(fastify.mongo[CLIENT_NAME].db)
         t.ok(fastify.mongo[CLIENT_NAME])
         t.ok(fastify.mongo[CLIENT_NAME].client)
         t.ok(fastify.mongo[CLIENT_NAME].dbs)
         t.ok(fastify.mongo[CLIENT_NAME].dbs[DATABASE_NAME])
+        t.ok(fastify.mongo[CLIENT_NAME].db)
       })
     })
     .catch(t.threw)

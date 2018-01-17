@@ -21,7 +21,7 @@ function fastifyMongodb (fastify, options, next) {
       mongo[options.name] = mongo
     }
     if (databaseName) {
-      mongo.dbs[databaseName] = client.db(databaseName)
+      mongo.dbs[databaseName] = mongo.db = client.db(databaseName)
     }
     fastify.decorate('mongo', mongo)
     fastify.addHook('onClose', (fastify, done) => client.close(done))
@@ -49,7 +49,7 @@ function fastifyMongodb (fastify, options, next) {
     }
 
     if (databaseName) {
-      mongo.dbs[databaseName] = client.db(databaseName)
+      mongo.dbs[databaseName] = mongo.db = client.db(databaseName)
     }
 
     fastify.addHook('onClose', (fastify, done) => client.close(done))
