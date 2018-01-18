@@ -7,303 +7,392 @@ const fastifyMongo = require('./index')
 
 const mongodb = require('mongodb')
 
-const MONGODB_URL = 'mongodb://127.0.0.1'
+const NO_DATABASE_MONGODB_URL = 'mongodb://127.0.0.1'
+const DATABASE_NAME = 'test'
+const MONGODB_URL = 'mongodb://127.0.0.1/' + DATABASE_NAME
 const CLIENT_NAME = 'client_name'
-const DATABASE_NAME = 'my_awesome_database'
+const ANOTHER_DATABASE_NAME = 'my_awesome_database'
 const COLLECTION_NAME = 'mycoll'
 
-test('fastify.mongo should exist', t => {
-  t.plan(4)
+test('{ url: NO_DATABASE_MONGODB_URL }', t => {
+  t.plan(5 + 4 + 2)
 
-  const fastify = Fastify()
-  t.teardown(() => fastify.close())
-
-  fastify.register(fastifyMongo, {
-    url: MONGODB_URL
-  })
-
-  fastify.ready(err => {
+  register(t, { url: NO_DATABASE_MONGODB_URL }, function (err, fastify) {
     t.error(err)
     t.ok(fastify.mongo)
     t.ok(fastify.mongo.client)
     t.ok(fastify.mongo.ObjectId)
+    t.notOk(fastify.mongo.db)
+
+    testObjectId(t, fastify.mongo.ObjectId)
+    testClient(t, fastify.mongo.client)
   })
 })
 
-test('fastify.mongo.dbs.test2 should exist', t => {
-  t.plan(7)
+test('{ url: MONGODB_URL }', t => {
+  t.plan(6 + 4 + 2 + 2)
 
-  const fastify = Fastify()
-  t.teardown(() => fastify.close())
-
-  fastify.register(fastifyMongo, {
-    url: MONGODB_URL,
-    database: DATABASE_NAME
-  })
-
-  fastify.ready(err => {
+  register(t, { url: MONGODB_URL }, function (err, fastify) {
     t.error(err)
     t.ok(fastify.mongo)
     t.ok(fastify.mongo.client)
     t.ok(fastify.mongo.ObjectId)
-    t.ok(fastify.mongo.dbs)
-    t.ok(fastify.mongo.dbs[DATABASE_NAME])
     t.ok(fastify.mongo.db)
+    t.equal(fastify.mongo.db.s.databaseName, DATABASE_NAME)
+
+    testObjectId(t, fastify.mongo.ObjectId)
+    testClient(t, fastify.mongo.client)
+    testDatabase(t, fastify.mongo.db)
   })
 })
 
-test('fastify.mongo.ObjectId should be a mongo ObjectId', t => {
-  t.plan(5)
+test('{ url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME }', t => {
+  t.plan(8 + 4 + 2 + 4 + 2)
 
-  const fastify = Fastify()
-  t.teardown(() => fastify.close())
-
-  fastify.register(fastifyMongo, {
-    url: MONGODB_URL
-  })
-
-  fastify.ready(err => {
-    t.error(err)
-
-    const obj1 = new fastify.mongo.ObjectId()
-    t.ok(obj1)
-
-    const obj2 = new fastify.mongo.ObjectId(obj1)
-    t.ok(obj2)
-    t.ok(obj1.equals(obj2))
-
-    const obj3 = new fastify.mongo.ObjectId()
-    t.notOk(obj1.equals(obj3))
-  })
-})
-
-test('fastify.mongo.db should be the mongo client', t => {
-  t.plan(3)
-
-  const fastify = Fastify()
-  t.tearDown(() => fastify.close())
-
-  fastify.register(fastifyMongo, {
-    url: MONGODB_URL
-  })
-
-  fastify.ready(err => {
-    t.error(err)
-
-    const db = fastify.mongo.client.db(DATABASE_NAME)
-    const col = db.collection(COLLECTION_NAME)
-
-    col.insertOne({ a: 1 }, (err, r) => {
-      t.error(err)
-      t.equal(1, r.insertedCount)
-    })
-  })
-})
-
-test('fastify.mongo[CLIENT_NAME] should exist', t => {
-  t.plan(5)
-
-  const fastify = Fastify()
-  t.tearDown(() => fastify.close())
-
-  fastify.register(fastifyMongo, {
-    name: CLIENT_NAME,
-    url: MONGODB_URL
-  })
-
-  fastify.ready(err => {
+  register(t, { url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME }, function (err, fastify) {
     t.error(err)
     t.ok(fastify.mongo)
-    t.ok(fastify.mongo[CLIENT_NAME])
+    t.ok(fastify.mongo.client)
+    t.ok(fastify.mongo.ObjectId)
+    t.notOk(fastify.mongo.db)
+
     t.ok(fastify.mongo[CLIENT_NAME].client)
     t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
+    t.notOk(fastify.mongo[CLIENT_NAME].db)
+
+    testObjectId(t, fastify.mongo.ObjectId)
+    testClient(t, fastify.mongo.client)
+
+    testObjectId(t, fastify.mongo[CLIENT_NAME].ObjectId)
+    testClient(t, fastify.mongo[CLIENT_NAME].client)
   })
 })
 
-test('fastify.mongo[CLIENT_NAME].dbs[DATABASE_NAME] should exist', t => {
-  t.plan(11)
+test('{ url: MONGODB_URL, name: CLIENT_NAME }', t => {
+  t.plan(10 + 4 + 2 + 2 + 4 + 2 + 2)
 
-  const fastify = Fastify()
-  t.tearDown(() => fastify.close())
-
-  fastify.register(fastifyMongo, {
-    name: CLIENT_NAME,
-    url: MONGODB_URL,
-    database: DATABASE_NAME
-  })
-
-  fastify.ready(err => {
+  register(t, { url: MONGODB_URL, name: CLIENT_NAME }, function (err, fastify) {
     t.error(err)
     t.ok(fastify.mongo)
-    t.ok(fastify.mongo.dbs)
-    t.ok(fastify.mongo.dbs[DATABASE_NAME])
+    t.ok(fastify.mongo.client)
+    t.ok(fastify.mongo.ObjectId)
     t.ok(fastify.mongo.db)
-    t.ok(fastify.mongo[CLIENT_NAME])
+    t.equal(fastify.mongo.db.s.databaseName, DATABASE_NAME)
+
     t.ok(fastify.mongo[CLIENT_NAME].client)
     t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
-    t.ok(fastify.mongo[CLIENT_NAME].dbs)
-    t.ok(fastify.mongo[CLIENT_NAME].dbs[DATABASE_NAME])
     t.ok(fastify.mongo[CLIENT_NAME].db)
+    t.equal(fastify.mongo[CLIENT_NAME].db.s.databaseName, DATABASE_NAME)
+
+    testObjectId(t, fastify.mongo.ObjectId)
+    testClient(t, fastify.mongo.client)
+    testDatabase(t, fastify.mongo.db)
+
+    testObjectId(t, fastify.mongo[CLIENT_NAME].ObjectId)
+    testClient(t, fastify.mongo[CLIENT_NAME].client)
+    testDatabase(t, fastify.mongo[CLIENT_NAME].db)
   })
 })
 
-test('fastify.mongo[CLIENT_NAME].ObjectId should be a mongo ObjectId', t => {
-  t.plan(5)
+test('{ url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', t => {
+  t.plan(10 + 4 + 2 + 2 + 4 + 2 + 2)
 
-  const fastify = Fastify()
-  t.tearDown(() => fastify.close())
-
-  fastify.register(fastifyMongo, {
-    name: CLIENT_NAME,
-    url: MONGODB_URL
-  })
-
-  fastify.ready(err => {
+  register(t, { url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
     t.error(err)
+    t.ok(fastify.mongo)
+    t.ok(fastify.mongo.client)
+    t.ok(fastify.mongo.ObjectId)
+    t.ok(fastify.mongo.db)
+    t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
 
-    const obj1 = new fastify.mongo[CLIENT_NAME].ObjectId()
-    t.ok(obj1)
+    t.ok(fastify.mongo[CLIENT_NAME].client)
+    t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
+    t.ok(fastify.mongo[CLIENT_NAME].db)
+    t.equal(fastify.mongo[CLIENT_NAME].db.s.databaseName, ANOTHER_DATABASE_NAME)
 
-    const obj2 = new fastify.mongo[CLIENT_NAME].ObjectId(obj1)
-    t.ok(obj2)
-    t.ok(obj1.equals(obj2))
+    testObjectId(t, fastify.mongo.ObjectId)
+    testClient(t, fastify.mongo.client)
+    testDatabase(t, fastify.mongo.db)
 
-    const obj3 = new fastify.mongo[CLIENT_NAME].ObjectId()
-    t.notOk(obj1.equals(obj3))
+    testObjectId(t, fastify.mongo[CLIENT_NAME].ObjectId)
+    testClient(t, fastify.mongo[CLIENT_NAME].client)
+    testDatabase(t, fastify.mongo[CLIENT_NAME].db)
   })
 })
 
-test('fastify.mongo.db should be the mongo database client', t => {
-  t.plan(3)
+test('{ url: MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', t => {
+  t.plan(10 + 4 + 2 + 2 + 4 + 2 + 2)
 
-  const fastify = Fastify()
-  t.tearDown(() => fastify.close())
-
-  fastify.register(fastifyMongo, {
-    name: CLIENT_NAME,
-    url: MONGODB_URL
-  })
-
-  fastify.ready(err => {
+  register(t, { url: MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
     t.error(err)
+    t.ok(fastify.mongo)
+    t.ok(fastify.mongo.client)
+    t.ok(fastify.mongo.ObjectId)
+    t.ok(fastify.mongo.db)
+    t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
 
-    const db = fastify.mongo[CLIENT_NAME].client.db(DATABASE_NAME)
-    const col = db.collection(COLLECTION_NAME)
+    t.ok(fastify.mongo[CLIENT_NAME].client)
+    t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
+    t.ok(fastify.mongo[CLIENT_NAME].db)
+    t.equal(fastify.mongo[CLIENT_NAME].db.s.databaseName, ANOTHER_DATABASE_NAME)
 
-    col.insertOne({ a: 1 }, (err, r) => {
-      t.error(err)
-      t.equal(1, r.insertedCount)
-    })
+    testObjectId(t, fastify.mongo.ObjectId)
+    testClient(t, fastify.mongo.client)
+    testDatabase(t, fastify.mongo.db)
+
+    testObjectId(t, fastify.mongo[CLIENT_NAME].ObjectId)
+    testClient(t, fastify.mongo[CLIENT_NAME].client)
+    testDatabase(t, fastify.mongo[CLIENT_NAME].db)
   })
 })
 
-test('accepts a pre-configured mongo client', t => {
-  t.plan(3)
+test('{ url: NO_DATABASE_MONGODB_URL, database: ANOTHER_DATABASE_NAME }', t => {
+  t.plan(6 + 4 + 2 + 2)
 
-  mongodb.MongoClient.connect(MONGODB_URL)
-    .then((client) => {
-      const fastify = Fastify()
-      t.tearDown(() => fastify.close())
+  register(t, { url: NO_DATABASE_MONGODB_URL, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
+    t.error(err)
+    t.ok(fastify.mongo)
+    t.ok(fastify.mongo.client)
+    t.ok(fastify.mongo.ObjectId)
+    t.ok(fastify.mongo.db)
+    t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
 
-      fastify.register(fastifyMongo, {client: client})
-        .ready(err => {
-          t.error(err)
-
-          t.ok(fastify.mongo)
-          t.ok(fastify.mongo.client)
-        })
-    })
-    .catch(t.threw)
+    testObjectId(t, fastify.mongo.ObjectId)
+    testClient(t, fastify.mongo.client)
+    testDatabase(t, fastify.mongo.db)
+  })
 })
 
-test('accepts a pre-configured mongo client with database', t => {
-  t.plan(6)
+test('{ url: MONGODB_URL, database: ANOTHER_DATABASE_NAME }', t => {
+  t.plan(6 + 4 + 2 + 2)
 
-  mongodb.MongoClient.connect(MONGODB_URL)
-    .then((client) => {
-      const fastify = Fastify()
-      t.tearDown(() => fastify.close())
+  register(t, { url: MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
+    t.error(err)
+    t.ok(fastify.mongo)
+    t.ok(fastify.mongo.client)
+    t.ok(fastify.mongo.ObjectId)
+    t.ok(fastify.mongo.db)
+    t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
 
-      fastify.register(fastifyMongo, {client: client, database: DATABASE_NAME})
-        .ready(err => {
-          t.error(err)
-
-          t.ok(fastify.mongo)
-          t.ok(fastify.mongo.client)
-          t.ok(fastify.mongo.dbs)
-          t.ok(fastify.mongo.dbs[DATABASE_NAME])
-          t.ok(fastify.mongo.db)
-        })
-    })
-    .catch(t.threw)
+    testObjectId(t, fastify.mongo.ObjectId)
+    testClient(t, fastify.mongo.client)
+    testDatabase(t, fastify.mongo.db)
+  })
 })
 
-test('accepts a pre-configured named mongo client', t => {
-  t.plan(3)
+test('{ client: client }', t => {
+  t.plan(5 + 4 + 2)
 
-  mongodb.MongoClient.connect(MONGODB_URL)
-    .then((client) => {
-      const fastify = Fastify()
-      t.tearDown(() => fastify.close())
-
-      fastify.register(fastifyMongo, {client: client, name: CLIENT_NAME})
-
-      fastify.ready(err => {
+  mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
+    .then(client => {
+      register(t, { client: client }, function (err, fastify) {
         t.error(err)
-
-        const db = fastify.mongo[CLIENT_NAME].client.db(DATABASE_NAME)
-        const col = db.collection(COLLECTION_NAME)
-
-        col.insertOne({ a: 1 }, (err, r) => {
-          t.error(err)
-          t.equal(1, r.insertedCount)
-        })
-      })
-    })
-    .catch(t.threw)
-})
-
-test('accepts a pre-configured named mongo client with database', t => {
-  t.plan(11)
-
-  mongodb.MongoClient.connect(MONGODB_URL)
-    .then((client) => {
-      const fastify = Fastify()
-      t.tearDown(() => fastify.close())
-
-      fastify.register(fastifyMongo, {client: client, name: CLIENT_NAME, database: DATABASE_NAME})
-
-      fastify.ready(err => {
-        t.error(err)
-
         t.ok(fastify.mongo)
         t.ok(fastify.mongo.client)
-        t.ok(fastify.mongo.dbs)
-        t.ok(fastify.mongo.dbs[DATABASE_NAME])
-        t.ok(fastify.mongo[CLIENT_NAME].db)
-        t.ok(fastify.mongo[CLIENT_NAME])
-        t.ok(fastify.mongo[CLIENT_NAME].client)
-        t.ok(fastify.mongo[CLIENT_NAME].dbs)
-        t.ok(fastify.mongo[CLIENT_NAME].dbs[DATABASE_NAME])
-        t.ok(fastify.mongo[CLIENT_NAME].db)
+        t.ok(fastify.mongo.ObjectId)
+        t.notOk(fastify.mongo.db)
+
+        testObjectId(t, fastify.mongo.ObjectId)
+        testClient(t, fastify.mongo.client)
       })
     })
     .catch(t.threw)
 })
 
-test('throw if mongo is already added', t => {
-  t.plan(1)
+test('{ client: client, database: DATABASE_NAME }', t => {
+  t.plan(6 + 4 + 2 + 2)
 
-  const fastify = Fastify()
-  t.tearDown(done => fastify.close(done))
+  mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
+    .then(client => {
+      register(t, { client: client, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
+        t.error(err)
+        t.ok(fastify.mongo)
+        t.ok(fastify.mongo.client)
+        t.ok(fastify.mongo.ObjectId)
+        t.ok(fastify.mongo.db)
+        t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
 
-  fastify.register(fastifyMongo, { url: MONGODB_URL })
+        testObjectId(t, fastify.mongo.ObjectId)
+        testClient(t, fastify.mongo.client)
+        testDatabase(t, fastify.mongo.db)
+      })
+    })
+    .catch(t.threw)
+})
 
-  fastify.after(() => {
-    fastify.register(fastifyMongo, { url: MONGODB_URL })
-  })
+test('{ client: client, name: CLIENT_NAME }', t => {
+  t.plan(8 + 4 + 2 + 4 + 2)
 
-  fastify.ready(err => {
-    t.equal(err.message, 'fastify-mongo has already registered')
+  mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
+    .then(client => {
+      register(t, { client: client, name: CLIENT_NAME }, function (err, fastify) {
+        t.error(err)
+        t.ok(fastify.mongo)
+        t.ok(fastify.mongo.client)
+        t.ok(fastify.mongo.ObjectId)
+        t.notOk(fastify.mongo.db)
+
+        t.ok(fastify.mongo[CLIENT_NAME].client)
+        t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
+        t.notOk(fastify.mongo[CLIENT_NAME].db)
+
+        testObjectId(t, fastify.mongo.ObjectId)
+        testClient(t, fastify.mongo.client)
+
+        testObjectId(t, fastify.mongo[CLIENT_NAME].ObjectId)
+        testClient(t, fastify.mongo[CLIENT_NAME].client)
+      })
+    })
+    .catch(t.threw)
+})
+
+test('{ client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', t => {
+  t.plan(10 + 4 + 2 + 2 + 4 + 2 + 2)
+
+  mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
+    .then(client => {
+      register(t, { client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
+        t.error(err)
+        t.ok(fastify.mongo)
+        t.ok(fastify.mongo.client)
+        t.ok(fastify.mongo.ObjectId)
+        t.ok(fastify.mongo.db)
+        t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
+
+        t.ok(fastify.mongo[CLIENT_NAME].client)
+        t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
+        t.ok(fastify.mongo[CLIENT_NAME].db)
+        t.equal(fastify.mongo[CLIENT_NAME].db.s.databaseName, ANOTHER_DATABASE_NAME)
+
+        testObjectId(t, fastify.mongo.ObjectId)
+        testClient(t, fastify.mongo.client)
+        testDatabase(t, fastify.mongo.db)
+
+        testObjectId(t, fastify.mongo[CLIENT_NAME].ObjectId)
+        testClient(t, fastify.mongo[CLIENT_NAME].client)
+        testDatabase(t, fastify.mongo[CLIENT_NAME].db)
+      })
+    })
+    .catch(t.threw)
+})
+
+test('{ }', t => {
+  t.plan(2)
+  register(t, { }, function (err, fastify) {
+    t.ok(err)
+    t.equal(err.message, '`url` parameter is mandatory if no client is provided')
   })
 })
+
+test('{ url: "unknown://protocol" }', t => {
+  t.plan(2)
+  register(t, { url: 'unknown://protocol' }, function (err, fastify) {
+    t.ok(err)
+    t.ok(/Invalid schema/.test(err.message))
+  })
+})
+
+test('double register without name', t => {
+  t.plan(2)
+
+  const fastify = Fastify()
+  t.teardown(() => fastify.close())
+
+  fastify
+    .register(fastifyMongo, { url: MONGODB_URL })
+    .register(fastifyMongo, { url: MONGODB_URL })
+    .ready(err => {
+      t.ok(err)
+      t.equal(err.message, 'fastify-mongodb has already registered')
+    })
+})
+
+test('double register with different name', t => {
+  t.plan(14 + 4 + 2 + 2 + 4 + 2 + 2 + 4 + 2 + 2)
+
+  const fastify = Fastify()
+  t.teardown(() => fastify.close())
+
+  fastify
+    .register(fastifyMongo, { url: MONGODB_URL, name: 'client1' })
+    .register(fastifyMongo, { url: NO_DATABASE_MONGODB_URL, name: 'client2', database: ANOTHER_DATABASE_NAME })
+    .ready(err => {
+      t.error(err)
+      t.ok(fastify.mongo)
+
+      t.ok(fastify.mongo.client)
+      t.ok(fastify.mongo.ObjectId)
+      t.ok(fastify.mongo.db)
+      t.equal(fastify.mongo.db.s.databaseName, DATABASE_NAME)
+
+      t.ok(fastify.mongo.client1.client)
+      t.ok(fastify.mongo.client1.ObjectId)
+      t.ok(fastify.mongo.client1.db)
+      t.equal(fastify.mongo.client1.db.s.databaseName, DATABASE_NAME)
+
+      t.ok(fastify.mongo.client2.client)
+      t.ok(fastify.mongo.client2.ObjectId)
+      t.ok(fastify.mongo.client2.db)
+      t.equal(fastify.mongo.client2.db.s.databaseName, ANOTHER_DATABASE_NAME)
+
+      testObjectId(t, fastify.mongo.ObjectId)
+      testClient(t, fastify.mongo.client)
+      testDatabase(t, fastify.mongo.db)
+
+      testObjectId(t, fastify.mongo.client1.ObjectId)
+      testClient(t, fastify.mongo.client1.client)
+      testDatabase(t, fastify.mongo.client1.db)
+
+      testObjectId(t, fastify.mongo.client2.ObjectId)
+      testClient(t, fastify.mongo.client2.client)
+      testDatabase(t, fastify.mongo.client2.db)
+    })
+})
+
+test('double register with the same name', t => {
+  t.plan(2)
+
+  const fastify = Fastify()
+  t.teardown(() => fastify.close())
+
+  fastify
+    .register(fastifyMongo, { url: MONGODB_URL, name: CLIENT_NAME })
+    .register(fastifyMongo, { url: MONGODB_URL, name: CLIENT_NAME })
+    .ready(err => {
+      t.ok(err)
+      t.equal(err.message, 'Connection name already registered: ' + CLIENT_NAME)
+    })
+})
+
+function register (t, options, callback) {
+  const fastify = Fastify()
+  t.teardown(() => fastify.close())
+
+  fastify.register(fastifyMongo, options)
+    .ready(err => callback(err, fastify))
+}
+
+function testObjectId (t, ObjectId) {
+  const obj1 = new ObjectId()
+  t.ok(obj1)
+
+  const obj2 = new ObjectId(obj1)
+  t.ok(obj2)
+  t.ok(obj1.equals(obj2))
+
+  const obj3 = new ObjectId()
+  t.notOk(obj1.equals(obj3))
+}
+
+function testClient (t, client) {
+  testDatabase(t, client.db(DATABASE_NAME))
+}
+
+function testDatabase (t, db) {
+  const col = db.collection(COLLECTION_NAME)
+
+  col.insertOne({ a: 1 }, (err, r) => {
+    t.error(err)
+    t.equal(1, r.insertedCount)
+  })
+}

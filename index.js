@@ -1,76 +1,82 @@
 'use strict'
 
+const urlModule = require('url')
+
 const fp = require('fastify-plugin')
 const MongoDb = require('mongodb')
 
 const MongoClient = MongoDb.MongoClient
 const ObjectId = MongoDb.ObjectId
 
+function decorateFastifyInstance (fastify, client, options, next) {
+  fastify.addHook('onClose', (fastify, done) => client.close(done))
+
+  const databaseName = options.database
+  const name = options.name
+
+  const mongo = {
+    client: client,
+    ObjectId: ObjectId
+  }
+  if (name) {
+    if (!fastify.mongo) {
+      fastify.decorate('mongo', mongo)
+    }
+    if (fastify.mongo[name]) {
+      next(new Error('Connection name already registered: ' + name))
+      return
+    }
+
+    fastify.mongo[name] = mongo
+  } else {
+    if (fastify.mongo) {
+      next(new Error('fastify-mongodb has already registered'))
+      return
+    }
+  }
+
+  if (databaseName) {
+    mongo.db = client.db(databaseName)
+  }
+
+  if (!fastify.mongo) {
+    fastify.decorate('mongo', mongo)
+  }
+
+  next()
+}
+
 function fastifyMongodb (fastify, options, next) {
   if (options.client) {
-    const client = options.client
-
-    const databaseName = options.database
-
-    const mongo = {
-      client: client,
-      ObjectId: ObjectId,
-      dbs: {}
-    }
-    if (options.name) {
-      mongo[options.name] = mongo
-    }
-    if (databaseName) {
-      mongo.dbs[databaseName] = mongo.db = client.db(databaseName)
-    }
-    fastify.decorate('mongo', mongo)
-    fastify.addHook('onClose', (fastify, done) => client.close(done))
-    return next()
+    decorateFastifyInstance(fastify, options.client, options, next)
+    return
   }
 
   const url = options.url
+  if (!url) {
+    next(new Error('`url` parameter is mandatory if no client is provided'))
+    return
+  }
+  const urlParsed = urlModule.parse(url)
   delete options.url
 
   const name = options.name
   delete options.name
 
-  const databaseName = options.database
+  const databaseName = options.database || (urlParsed.pathname ? urlParsed.pathname.substr(1) : undefined)
   delete options.database
 
-  MongoClient.connect(url, options, onConnect)
-
-  function onConnect (err, client) {
-    if (err) return next(err)
-
-    const mongo = {
-      client: client,
-      ObjectId: ObjectId,
-      dbs: {}
+  MongoClient.connect(url, options, function onConnect (err, client) {
+    if (err) {
+      next(err)
+      return
     }
 
-    if (databaseName) {
-      mongo.dbs[databaseName] = mongo.db = client.db(databaseName)
-    }
-
-    fastify.addHook('onClose', (fastify, done) => client.close(done))
-
-    if (name) {
-      if (!fastify.mongo) {
-        fastify.decorate('mongo', mongo)
-      }
-
-      fastify.mongo[name] = mongo
-    } else {
-      if (fastify.mongo) {
-        next(new Error('fastify-mongo has already registered'))
-        return
-      } else {
-        fastify.mongo = mongo
-      }
-    }
-
-    next()
-  }
+    decorateFastifyInstance(fastify, client, {
+      database: databaseName,
+      name: name
+    }, next)
+  })
 }
 
 module.exports = fp(fastifyMongodb, '>=0.13.1')
