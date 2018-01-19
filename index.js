@@ -60,4 +60,7 @@ function fastifyMongodb (fastify, options, next) {
   }
 }
 
-module.exports = fp(fastifyMongodb, '>=0.13.1')
+module.exports = fp(fastifyMongodb, {
+  fastify: '>=0.39',
+  name: 'fastify-mongodb'
+})
