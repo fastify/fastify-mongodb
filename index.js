@@ -1,18 +1,15 @@
 'use strict'
 
 const fp = require('fastify-plugin')
-const MongoDb = require('mongodb')
-
-const MongoClient = MongoDb.MongoClient
-const ObjectId = MongoDb.ObjectId
+const { MongoClient, ObjectId } = require('mongodb')
 
 function fastifyMongodb (fastify, options, next) {
   if (options.client) {
     const db = options.client
     delete options.client
     const mongo = {
-      db: db,
-      ObjectId: ObjectId
+      db,
+      ObjectId
     }
     if (options.name) {
       mongo[options.name] = mongo
@@ -35,8 +32,8 @@ function fastifyMongodb (fastify, options, next) {
     if (err) return next(err)
 
     const mongo = {
-      db: db,
-      ObjectId: ObjectId
+      db,
+      ObjectId
     }
 
     fastify.addHook('onClose', (fastify, done) => db.close(done))
