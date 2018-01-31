@@ -35,7 +35,6 @@
   },
   "dependencies": {
     "fastify-plugin": "^0.2.1",
-    "lodash.omit": "^4.5.0",
     "mongodb": "^3.0.1"
   }
 }

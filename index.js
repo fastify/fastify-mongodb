@@ -1,7 +1,6 @@
 'use strict'
 
 const urlModule = require('url')
-const omit = require('lodash.omit')
 const fp = require('fastify-plugin')
 const MongoDb = require('mongodb')
 
@@ -47,6 +46,8 @@ function decorateFastifyInstance (fastify, client, options, next) {
 }
 
 function fastifyMongodb (fastify, options, next) {
+  options = Object.assign({}, options)
+
   if (options.client) {
     decorateFastifyInstance(fastify, options.client, options, next)
     return
@@ -58,12 +59,14 @@ function fastifyMongodb (fastify, options, next) {
     return
   }
   const urlParsed = urlModule.parse(url)
+  delete options.url
 
   const name = options.name
+  delete options.name
 
   const databaseName = options.database || (urlParsed.pathname ? urlParsed.pathname.substr(1) : undefined)
+  delete options.database
 
-  options = omit(options, ['url', 'name', 'database'])
   MongoClient.connect(url, options, function onConnect (err, client) {
     if (err) {
       next(err)
