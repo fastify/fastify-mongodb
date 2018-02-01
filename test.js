@@ -364,6 +364,20 @@ test('double register with the same name', t => {
     })
 })
 
+test('Immutable options', t => {
+  t.plan(2)
+
+  const given = { url: MONGODB_URL, name: CLIENT_NAME, database: DATABASE_NAME }
+  register(t, given, function (err, fastify) {
+    t.error(err)
+    t.deepEqual(given, {
+      url: MONGODB_URL,
+      name: CLIENT_NAME,
+      database: DATABASE_NAME
+    })
+  })
+})
+
 function register (t, options, callback) {
   const fastify = Fastify()
   t.teardown(() => fastify.close())

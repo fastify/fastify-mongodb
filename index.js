@@ -1,7 +1,6 @@
 'use strict'
 
 const urlModule = require('url')
-
 const fp = require('fastify-plugin')
 const MongoDb = require('mongodb')
 
@@ -47,6 +46,8 @@ function decorateFastifyInstance (fastify, client, options, next) {
 }
 
 function fastifyMongodb (fastify, options, next) {
+  options = Object.assign({}, options)
+
   if (options.client) {
     decorateFastifyInstance(fastify, options.client, options, next)
     return
