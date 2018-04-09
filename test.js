@@ -378,6 +378,32 @@ test('Immutable options', t => {
   })
 })
 
+test('Collection factory', t => {
+  t.plan(4)
+
+  const testDoc = {
+    test: 'pau'
+  }
+
+  const given = {
+    url: MONGODB_URL,
+    collections: {
+      testColl: function (c) {
+        return c.insertOne(testDoc)
+      }
+    }
+  }
+
+  register(t, given, function (err, fastify) {
+    t.error(err)
+    t.ok(fastify.mongo.collections.testColl)
+    t.equal(fastify.mongo.collections.testColl.collectionName, 'testColl')
+    fastify.mongo.collections.testColl.findOne({ test: 'pau' }, (e, i) => {
+      t.ok(i)
+    })
+  })
+})
+
 function register (t, options, callback) {
   const fastify = Fastify()
   t.teardown(() => fastify.close())

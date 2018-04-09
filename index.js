@@ -34,15 +34,31 @@ function decorateFastifyInstance (fastify, client, options, next) {
     }
   }
 
+  let pendingCollections = []
+
   if (databaseName) {
     mongo.db = client.db(databaseName)
+
+    if (options.collections) {
+      mongo.collections = {}
+
+      pendingCollections = Object.keys(options.collections).map(function (collectionName) {
+        const collection = mongo.db.collection(collectionName)
+
+        return Promise.resolve(options.collections[collectionName](collection)).then(function () {
+          mongo.collections[collectionName] = collection
+        })
+      })
+    }
   }
 
   if (!fastify.mongo) {
     fastify.decorate('mongo', mongo)
   }
 
-  next()
+  Promise.all(pendingCollections).then(function () {
+    next()
+  })
 }
 
 function fastifyMongodb (fastify, options, next) {
@@ -67,6 +83,9 @@ function fastifyMongodb (fastify, options, next) {
   const databaseName = options.database || (urlParsed.pathname ? urlParsed.pathname.substr(1) : undefined)
   delete options.database
 
+  const collections = options.collections
+  delete options.collections
+
   MongoClient.connect(url, options, function onConnect (err, client) {
     if (err) {
       next(err)
@@ -75,7 +94,8 @@ function fastifyMongodb (fastify, options, next) {
 
     decorateFastifyInstance(fastify, client, {
       database: databaseName,
-      name: name
+      name: name,
+      collections: collections
     }, next)
   })
 }
