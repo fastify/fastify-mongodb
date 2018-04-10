@@ -404,6 +404,24 @@ test('Collection factory', t => {
   })
 })
 
+test('Collection factory throws an error', t => {
+  t.plan(2)
+
+  const given = {
+    url: MONGODB_URL,
+    collections: {
+      testColl: function (c) {
+        return Promise.reject(new Error('An unexpected error'))
+      }
+    }
+  }
+
+  register(t, given, function (err, fastify) {
+    t.ok(err)
+    t.equal('An unexpected error', err.message)
+  })
+})
+
 function register (t, options, callback) {
   const fastify = Fastify()
   t.teardown(() => fastify.close())

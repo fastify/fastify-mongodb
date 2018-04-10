@@ -58,6 +58,8 @@ function decorateFastifyInstance (fastify, client, options, next) {
 
   Promise.all(pendingCollections).then(function () {
     next()
+  }).catch(function (err) {
+    next(err)
   })
 }
 
