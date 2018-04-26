@@ -185,6 +185,7 @@ test('{ client: client }', t => {
 
   mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
     .then(client => {
+      t.teardown(client.close.bind(client))
       register(t, { client: client }, function (err, fastify) {
         t.error(err)
         t.ok(fastify.mongo)
@@ -204,6 +205,7 @@ test('{ client: client, database: DATABASE_NAME }', t => {
 
   mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
     .then(client => {
+      t.teardown(client.close.bind(client))
       register(t, { client: client, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
         t.error(err)
         t.ok(fastify.mongo)
@@ -225,6 +227,7 @@ test('{ client: client, name: CLIENT_NAME }', t => {
 
   mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
     .then(client => {
+      t.teardown(client.close.bind(client))
       register(t, { client: client, name: CLIENT_NAME }, function (err, fastify) {
         t.error(err)
         t.ok(fastify.mongo)
@@ -251,6 +254,7 @@ test('{ client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', t
 
   mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
     .then(client => {
+      t.teardown(client.close.bind(client))
       register(t, { client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
         t.error(err)
         t.ok(fastify.mongo)
@@ -274,6 +278,27 @@ test('{ client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', t
       })
     })
     .catch(t.threw)
+})
+
+test('{ client: client } does not set onClose', t => {
+  const fastify = Fastify()
+  return mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
+    .then(client => {
+      fastify.register(fastifyMongo, { client, database: DATABASE_NAME })
+      return fastify.ready()
+    })
+    .then(() => {
+      return fastify.close()
+    })
+    .then(() => {
+      const col = fastify.mongo.db.collection(COLLECTION_NAME)
+      return col
+        .insertOne({ a: 1 })
+        .then((r) => {
+          t.equal(1, r.insertedCount)
+        })
+        .then(() => fastify.mongo.client.close())
+    })
 })
 
 test('{ }', t => {

@@ -8,7 +8,13 @@ const MongoClient = MongoDb.MongoClient
 const ObjectId = MongoDb.ObjectId
 
 function decorateFastifyInstance (fastify, client, options, next) {
-  fastify.addHook('onClose', (fastify, done) => client.close(done))
+  fastify.addHook('onClose', (fastify, done) => {
+    if (options.client) {
+      done()
+      return
+    }
+    client.close(done)
+  })
 
   const databaseName = options.database
   const name = options.name
