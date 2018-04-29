@@ -69,7 +69,7 @@ mongodb.MongoClient.connect('mongodb://mongo/db')
   })
 ```
 
-Note: the passed `client` connection will be closed when the Fastify server
+Note: the passed `client` connection will **not** be closed when the Fastify server
 shuts down.
 
 ## Reference
