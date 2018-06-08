@@ -1,6 +1,5 @@
 'use strict'
 
-const urlModule = require('url')
 const fp = require('fastify-plugin')
 const MongoDb = require('mongodb')
 
@@ -57,17 +56,19 @@ function fastifyMongodb (fastify, options, next) {
   }
 
   const url = options.url
+  delete options.url
   if (!url) {
     next(new Error('`url` parameter is mandatory if no client is provided'))
     return
   }
-  const urlParsed = urlModule.parse(url)
-  delete options.url
+
+  const urlTokens = /\w\/([^?]*)/g.exec(url)
+  const parsedDbName = urlTokens && urlTokens[1]
 
   const name = options.name
   delete options.name
 
-  const databaseName = options.database || (urlParsed.pathname ? urlParsed.pathname.substr(1) : undefined)
+  const databaseName = options.database || parsedDbName
   delete options.database
 
   MongoClient.connect(url, options, function onConnect (err, client) {
