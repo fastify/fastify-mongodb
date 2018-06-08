@@ -14,8 +14,6 @@ const CLIENT_NAME = 'client_name'
 const ANOTHER_DATABASE_NAME = 'my_awesome_database'
 const COLLECTION_NAME = 'mycoll'
 const MULTIMONGODB_URL = 'mongodb://127.0.0.1:27017,127.0.0.1:27017,127.0.0.1:27017/' + DATABASE_NAME
-// const REPLICATED_DATABASE_MONGODB_URL = 'mongodb://user1:Passw0rd1@hostname1:27017,hostname2:27017,hostname:27017/' + DATABASE_NAME +
-//   '?replicaSet=myReplicaSet1&poolSize=25&readPreference=primaryPreferred&appname=myApp'
 
 test('{ url: NO_DATABASE_MONGODB_URL }', t => {
   t.plan(5 + 4 + 2)
