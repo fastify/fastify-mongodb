@@ -9,7 +9,7 @@ const ObjectId = MongoDb.ObjectId
 function decorateFastifyInstance (fastify, client, options, next) {
   if (!options.client) {
     // done() is not needed because .close() returns a Promise
-    fastify.addHook('onClose', (fastify) => client.close())
+    fastify.addHook('onClose', (fastify) => client.close(options.forceClose))
   }
 
   const databaseName = options.database
