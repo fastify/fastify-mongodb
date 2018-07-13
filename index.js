@@ -7,13 +7,15 @@ const MongoClient = MongoDb.MongoClient
 const ObjectId = MongoDb.ObjectId
 
 function decorateFastifyInstance (fastify, client, options, next) {
-  if (!options.client) {
-    // done() is not needed because .close() returns a Promise
-    fastify.addHook('onClose', (fastify) => client.close(options.forceClose))
-  }
-
+  const forceClose = options.forceClose
   const databaseName = options.database
   const name = options.name
+  const newClient = options.newClient
+
+  if (newClient) {
+    // done() is not needed because .close() returns a Promise
+    fastify.addHook('onClose', (fastify) => client.close(forceClose))
+  }
 
   const mongo = {
     client: client,
@@ -50,8 +52,22 @@ function decorateFastifyInstance (fastify, client, options, next) {
 function fastifyMongodb (fastify, options, next) {
   options = Object.assign({}, options)
 
+  const forceClose = options.forceClose
+  delete options.forceClose
+
+  const name = options.name
+  delete options.name
+
+  const database = options.database
+  delete options.database
+
   if (options.client) {
-    decorateFastifyInstance(fastify, options.client, options, next)
+    decorateFastifyInstance(fastify, options.client, {
+      newClient: false,
+      forceClose: forceClose,
+      database: database,
+      name: name
+    }, next)
     return
   }
 
@@ -64,12 +80,7 @@ function fastifyMongodb (fastify, options, next) {
 
   const urlTokens = /\w\/([^?]*)/g.exec(url)
   const parsedDbName = urlTokens && urlTokens[1]
-
-  const name = options.name
-  delete options.name
-
-  const databaseName = options.database || parsedDbName
-  delete options.database
+  const databaseName = database || parsedDbName
 
   MongoClient.connect(url, options, function onConnect (err, client) {
     if (err) {
@@ -78,6 +89,8 @@ function fastifyMongodb (fastify, options, next) {
     }
 
     decorateFastifyInstance(fastify, client, {
+      newClient: true,
+      forceClose: forceClose,
       database: databaseName,
       name: name
     }, next)
