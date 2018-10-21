@@ -11,6 +11,9 @@ node_js:
 services:
   - mongodb
 
+before_script:
+  - mongod
+  
 notifications:
   email:
     on_success: never
