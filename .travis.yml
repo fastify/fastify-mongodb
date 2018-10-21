@@ -11,8 +11,8 @@ node_js:
 services:
   - mongodb
 
-before_script:
-  - mongod
+script:
+  - if [[ "$TRAVIS_OS_NAME" == "windows" ]]; then mongod ; fi
   
 notifications:
   email:
