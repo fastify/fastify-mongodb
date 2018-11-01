@@ -50,7 +50,7 @@ declare module 'fastify' {
     HttpRequest = http.IncomingMessage,
     HttpResponse = http.ServerResponse
   > {
-    mongo: fastifyMongodb.FastifyMongoObject | fastifyMongodb.FastifyMongoNestedObject;
+    mongo: fastifyMongodb.FastifyMongoObject & fastifyMongodb.FastifyMongoNestedObject;
   }
 }
 
