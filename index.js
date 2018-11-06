@@ -50,7 +50,7 @@ function decorateFastifyInstance (fastify, client, options, next) {
 }
 
 function fastifyMongodb (fastify, options, next) {
-  options = Object.assign({}, options)
+  options = Object.assign({ useNewUrlParser: true }, options)
 
   const forceClose = options.forceClose
   delete options.forceClose
@@ -93,7 +93,7 @@ function fastifyMongodb (fastify, options, next) {
 
   MongoClient.connect(
     url,
-    { useNewUrlParser: true, ...options },
+    options,
     function onConnect (err, client) {
       if (err) {
         next(err)
