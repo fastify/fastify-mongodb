@@ -1,4 +1,3 @@
-'use strict'
 
 const t = require('tap')
 const test = t.test
@@ -12,21 +11,18 @@ const DATABASE_NAME = 'test'
 const MONGODB_URL = 'mongodb://127.0.0.1/' + DATABASE_NAME
 const CLIENT_NAME = 'client_name'
 const ANOTHER_DATABASE_NAME = 'my_awesome_database'
+const ANOTHER_MONGODB_URL = 'mongodb://127.0.0.1/' + ANOTHER_DATABASE_NAME
 const COLLECTION_NAME = 'mycoll'
-const MULTIMONGODB_URL = 'mongodb://127.0.0.1:27017,127.0.0.1:27017,127.0.0.1:27017/' + DATABASE_NAME
 
 test('{ url: NO_DATABASE_MONGODB_URL }', t => {
-  t.plan(5 + 4 + 2)
+  t.plan(2)
 
   register(t, { url: NO_DATABASE_MONGODB_URL }, function (err, fastify) {
-    t.error(err)
-    t.ok(fastify.mongo)
-    t.ok(fastify.mongo.client)
-    t.ok(fastify.mongo.ObjectId)
-    t.notOk(fastify.mongo.db)
-
-    testObjectId(t, fastify.mongo.ObjectId)
-    testClient(t, fastify.mongo.client)
+    t.ok(err)
+    t.equal(
+      err.message,
+      '`url` parameter must contain database name if no client is provided'
+    )
   })
 })
 
@@ -44,45 +40,6 @@ test('{ url: MONGODB_URL }', t => {
     testObjectId(t, fastify.mongo.ObjectId)
     testClient(t, fastify.mongo.client)
     testDatabase(t, fastify.mongo.db)
-  })
-})
-
-test('{ url: MULTIMONGODB_URL }', t => {
-  t.plan(6 + 4 + 2 + 2)
-
-  register(t, { url: MULTIMONGODB_URL }, function (err, fastify) {
-    t.error(err)
-    t.ok(fastify.mongo)
-    t.ok(fastify.mongo.client)
-    t.ok(fastify.mongo.ObjectId)
-    t.ok(fastify.mongo.db)
-    t.equal(fastify.mongo.db.s.databaseName, DATABASE_NAME)
-
-    testObjectId(t, fastify.mongo.ObjectId)
-    testClient(t, fastify.mongo.client)
-    testDatabase(t, fastify.mongo.db)
-  })
-})
-
-test('{ url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME }', t => {
-  t.plan(8 + 4 + 2 + 4 + 2)
-
-  register(t, { url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME }, function (err, fastify) {
-    t.error(err)
-    t.ok(fastify.mongo)
-    t.ok(fastify.mongo.client)
-    t.ok(fastify.mongo.ObjectId)
-    t.notOk(fastify.mongo.db)
-
-    t.ok(fastify.mongo[CLIENT_NAME].client)
-    t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
-    t.notOk(fastify.mongo[CLIENT_NAME].db)
-
-    testObjectId(t, fastify.mongo.ObjectId)
-    testClient(t, fastify.mongo.client)
-
-    testObjectId(t, fastify.mongo[CLIENT_NAME].ObjectId)
-    testClient(t, fastify.mongo[CLIENT_NAME].client)
   })
 })
 
@@ -112,96 +69,10 @@ test('{ url: MONGODB_URL, name: CLIENT_NAME }', t => {
   })
 })
 
-test('{ url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', t => {
-  t.plan(10 + 4 + 2 + 2 + 4 + 2 + 2)
-
-  register(t, { url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
-    t.error(err)
-    t.ok(fastify.mongo)
-    t.ok(fastify.mongo.client)
-    t.ok(fastify.mongo.ObjectId)
-    t.ok(fastify.mongo.db)
-    t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
-
-    t.ok(fastify.mongo[CLIENT_NAME].client)
-    t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
-    t.ok(fastify.mongo[CLIENT_NAME].db)
-    t.equal(fastify.mongo[CLIENT_NAME].db.s.databaseName, ANOTHER_DATABASE_NAME)
-
-    testObjectId(t, fastify.mongo.ObjectId)
-    testClient(t, fastify.mongo.client)
-    testDatabase(t, fastify.mongo.db)
-
-    testObjectId(t, fastify.mongo[CLIENT_NAME].ObjectId)
-    testClient(t, fastify.mongo[CLIENT_NAME].client)
-    testDatabase(t, fastify.mongo[CLIENT_NAME].db)
-  })
-})
-
-test('{ url: MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', t => {
-  t.plan(10 + 4 + 2 + 2 + 4 + 2 + 2)
-
-  register(t, { url: MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
-    t.error(err)
-    t.ok(fastify.mongo)
-    t.ok(fastify.mongo.client)
-    t.ok(fastify.mongo.ObjectId)
-    t.ok(fastify.mongo.db)
-    t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
-
-    t.ok(fastify.mongo[CLIENT_NAME].client)
-    t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
-    t.ok(fastify.mongo[CLIENT_NAME].db)
-    t.equal(fastify.mongo[CLIENT_NAME].db.s.databaseName, ANOTHER_DATABASE_NAME)
-
-    testObjectId(t, fastify.mongo.ObjectId)
-    testClient(t, fastify.mongo.client)
-    testDatabase(t, fastify.mongo.db)
-
-    testObjectId(t, fastify.mongo[CLIENT_NAME].ObjectId)
-    testClient(t, fastify.mongo[CLIENT_NAME].client)
-    testDatabase(t, fastify.mongo[CLIENT_NAME].db)
-  })
-})
-
-test('{ url: NO_DATABASE_MONGODB_URL, database: ANOTHER_DATABASE_NAME }', t => {
-  t.plan(6 + 4 + 2 + 2)
-
-  register(t, { url: NO_DATABASE_MONGODB_URL, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
-    t.error(err)
-    t.ok(fastify.mongo)
-    t.ok(fastify.mongo.client)
-    t.ok(fastify.mongo.ObjectId)
-    t.ok(fastify.mongo.db)
-    t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
-
-    testObjectId(t, fastify.mongo.ObjectId)
-    testClient(t, fastify.mongo.client)
-    testDatabase(t, fastify.mongo.db)
-  })
-})
-
-test('{ url: MONGODB_URL, database: ANOTHER_DATABASE_NAME }', t => {
-  t.plan(6 + 4 + 2 + 2)
-
-  register(t, { url: MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
-    t.error(err)
-    t.ok(fastify.mongo)
-    t.ok(fastify.mongo.client)
-    t.ok(fastify.mongo.ObjectId)
-    t.ok(fastify.mongo.db)
-    t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
-
-    testObjectId(t, fastify.mongo.ObjectId)
-    testClient(t, fastify.mongo.client)
-    testDatabase(t, fastify.mongo.db)
-  })
-})
-
 test('{ client: client }', t => {
   t.plan(5 + 4 + 2)
 
-  mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
+  mongodb.MongoClient.connect(MONGODB_URL, { useNewUrlParser: true })
     .then(client => {
       t.teardown(client.close.bind(client))
       register(t, { client: client }, function (err, fastify) {
@@ -218,32 +89,10 @@ test('{ client: client }', t => {
     .catch(t.threw)
 })
 
-test('{ client: client, database: DATABASE_NAME }', t => {
-  t.plan(6 + 4 + 2 + 2)
-
-  mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
-    .then(client => {
-      t.teardown(client.close.bind(client))
-      register(t, { client: client, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
-        t.error(err)
-        t.ok(fastify.mongo)
-        t.ok(fastify.mongo.client)
-        t.ok(fastify.mongo.ObjectId)
-        t.ok(fastify.mongo.db)
-        t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
-
-        testObjectId(t, fastify.mongo.ObjectId)
-        testClient(t, fastify.mongo.client)
-        testDatabase(t, fastify.mongo.db)
-      })
-    })
-    .catch(t.threw)
-})
-
 test('{ client: client, name: CLIENT_NAME }', t => {
   t.plan(8 + 4 + 2 + 4 + 2)
 
-  mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
+  mongodb.MongoClient.connect(MONGODB_URL, { useNewUrlParser: true })
     .then(client => {
       t.teardown(client.close.bind(client))
       register(t, { client: client, name: CLIENT_NAME }, function (err, fastify) {
@@ -267,40 +116,9 @@ test('{ client: client, name: CLIENT_NAME }', t => {
     .catch(t.threw)
 })
 
-test('{ client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', t => {
-  t.plan(10 + 4 + 2 + 2 + 4 + 2 + 2)
-
-  mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
-    .then(client => {
-      t.teardown(client.close.bind(client))
-      register(t, { client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
-        t.error(err)
-        t.ok(fastify.mongo)
-        t.ok(fastify.mongo.client)
-        t.ok(fastify.mongo.ObjectId)
-        t.ok(fastify.mongo.db)
-        t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
-
-        t.ok(fastify.mongo[CLIENT_NAME].client)
-        t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
-        t.ok(fastify.mongo[CLIENT_NAME].db)
-        t.equal(fastify.mongo[CLIENT_NAME].db.s.databaseName, ANOTHER_DATABASE_NAME)
-
-        testObjectId(t, fastify.mongo.ObjectId)
-        testClient(t, fastify.mongo.client)
-        testDatabase(t, fastify.mongo.db)
-
-        testObjectId(t, fastify.mongo[CLIENT_NAME].ObjectId)
-        testClient(t, fastify.mongo[CLIENT_NAME].client)
-        testDatabase(t, fastify.mongo[CLIENT_NAME].db)
-      })
-    })
-    .catch(t.threw)
-})
-
 test('{ client: client } does not set onClose', t => {
   const fastify = Fastify()
-  return mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
+  return mongodb.MongoClient.connect(MONGODB_URL, { useNewUrlParser: true })
     .then(client => {
       fastify.register(fastifyMongo, { client, database: DATABASE_NAME })
       return fastify.ready()
@@ -329,9 +147,9 @@ test('{ }', t => {
 
 test('{ url: "unknown://protocol" }', t => {
   t.plan(2)
-  register(t, { url: 'unknown://protocol' }, function (err, fastify) {
+  register(t, { url: 'unknown://protocol/test' }, function (err, fastify) {
     t.ok(err)
-    t.ok(/Invalid schema/.test(err.message))
+    t.ok(/Invalid connection string/.test(err.message))
   })
 })
 
@@ -358,7 +176,7 @@ test('double register with different name', t => {
 
   fastify
     .register(fastifyMongo, { url: MONGODB_URL, name: 'client1' })
-    .register(fastifyMongo, { url: NO_DATABASE_MONGODB_URL, name: 'client2', database: ANOTHER_DATABASE_NAME })
+    .register(fastifyMongo, { url: ANOTHER_MONGODB_URL, name: 'client2' })
     .ready(err => {
       t.error(err)
       t.ok(fastify.mongo)

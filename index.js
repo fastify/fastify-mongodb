@@ -82,19 +82,37 @@ function fastifyMongodb (fastify, options, next) {
   const parsedDbName = urlTokens && urlTokens[1]
   const databaseName = database || parsedDbName
 
-  MongoClient.connect(url, options, function onConnect (err, client) {
-    if (err) {
-      next(err)
-      return
-    }
+  if (!databaseName) {
+    next(
+      new Error(
+        '`url` parameter must contain database name if no client is provided'
+      )
+    )
+    return
+  }
 
-    decorateFastifyInstance(fastify, client, {
-      newClient: true,
-      forceClose: forceClose,
-      database: databaseName,
-      name: name
-    }, next)
-  })
+  MongoClient.connect(
+    url,
+    { useNewUrlParser: true, ...options },
+    function onConnect (err, client) {
+      if (err) {
+        next(err)
+        return
+      }
+
+      decorateFastifyInstance(
+        fastify,
+        client,
+        {
+          newClient: true,
+          forceClose: forceClose,
+          database: databaseName,
+          name: name
+        },
+        next
+      )
+    }
+  )
 }
 
 module.exports = fp(fastifyMongodb, {
