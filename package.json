@@ -1,6 +1,6 @@
 {
   "name": "fastify-mongodb",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Fastify MongoDB connection plugin",
   "main": "index.js",
   "scripts": {
@@ -29,6 +29,7 @@
   },
   "homepage": "https://github.com/fastify/fastify-mongodb#readme",
   "devDependencies": {
+    "@types/mongodb": "^3.1.14",
     "@types/node": "^10.7.1",
     "fastify": "^1.3.1",
     "pre-commit": "^1.2.2",
