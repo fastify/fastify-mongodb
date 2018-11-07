@@ -15,7 +15,7 @@ declare namespace fastifyMongodb {
     /**
      * Mongo ObjectId class
      */
-    ObjectId: mongodb.ObjectId;
+    ObjectId: typeof mongodb.ObjectId;
   }
 
   interface FastifyMongoNestedObject {
