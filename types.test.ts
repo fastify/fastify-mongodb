@@ -13,4 +13,5 @@ app
     const dbTest = app.mongo.client.db('test');
     const dbDb = app.mongo.db!;
     const ObjectId = app.mongo.ObjectId;
+    const myId = new ObjectId('aaaa');
   });
