@@ -73,8 +73,10 @@ mongodb.MongoClient.connect('mongodb://mongo/db')
   })
 ```
 
-Note: the passed `client` connection will **not** be closed when the Fastify server
+Notes: 
+* the passed `client` connection will **not** be closed when the Fastify server
 shuts down.
+* in order to terminate the mongodb connection you have to manually call the [fastify.close](https://www.fastify.io/docs/latest/Server/#close) method (for example for testing purposes, otherwise the test will hang).
 
 ## Reference
 
