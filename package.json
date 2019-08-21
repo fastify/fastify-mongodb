@@ -39,7 +39,7 @@
   },
   "dependencies": {
     "fastify-plugin": "^1.0.1",
-    "mongodb": "3.2.7"
+    "mongodb": "^3.3.0"
   },
   "greenkeeper": {
     "ignore": [
