@@ -38,7 +38,7 @@ test('{ url: MONGODB_URL }', t => {
     t.ok(fastify.mongo.client)
     t.ok(fastify.mongo.ObjectId)
     t.ok(fastify.mongo.db)
-    t.equal(fastify.mongo.db.s.databaseName, DATABASE_NAME)
+    t.equal(fastify.mongo.db.databaseName, DATABASE_NAME)
 
     testObjectId(t, fastify.mongo.ObjectId)
     testClient(t, fastify.mongo.client)
@@ -77,12 +77,13 @@ test('{ url: MONGODB_URL, name: CLIENT_NAME }', t => {
     t.ok(fastify.mongo.client)
     t.ok(fastify.mongo.ObjectId)
     t.ok(fastify.mongo.db)
-    t.equal(fastify.mongo.db.s.databaseName, DATABASE_NAME)
+    t.equal(fastify.mongo.db.
+            databaseName, DATABASE_NAME)
 
     t.ok(fastify.mongo[CLIENT_NAME].client)
     t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
     t.ok(fastify.mongo[CLIENT_NAME].db)
-    t.equal(fastify.mongo[CLIENT_NAME].db.s.databaseName, DATABASE_NAME)
+    t.equal(fastify.mongo[CLIENT_NAME].db.databaseName, DATABASE_NAME)
 
     testObjectId(t, fastify.mongo.ObjectId)
     testClient(t, fastify.mongo.client)
@@ -103,12 +104,12 @@ test('{ url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATAB
     t.ok(fastify.mongo.client)
     t.ok(fastify.mongo.ObjectId)
     t.ok(fastify.mongo.db)
-    t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
+    t.equal(fastify.mongo.db.databaseName, ANOTHER_DATABASE_NAME)
 
     t.ok(fastify.mongo[CLIENT_NAME].client)
     t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
     t.ok(fastify.mongo[CLIENT_NAME].db)
-    t.equal(fastify.mongo[CLIENT_NAME].db.s.databaseName, ANOTHER_DATABASE_NAME)
+    t.equal(fastify.mongo[CLIENT_NAME].db.databaseName, ANOTHER_DATABASE_NAME)
 
     testObjectId(t, fastify.mongo.ObjectId)
     testClient(t, fastify.mongo.client)
@@ -129,12 +130,12 @@ test('{ url: MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }',
     t.ok(fastify.mongo.client)
     t.ok(fastify.mongo.ObjectId)
     t.ok(fastify.mongo.db)
-    t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
+    t.equal(fastify.mongo.db.databaseName, ANOTHER_DATABASE_NAME)
 
     t.ok(fastify.mongo[CLIENT_NAME].client)
     t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
     t.ok(fastify.mongo[CLIENT_NAME].db)
-    t.equal(fastify.mongo[CLIENT_NAME].db.s.databaseName, ANOTHER_DATABASE_NAME)
+    t.equal(fastify.mongo[CLIENT_NAME].db.databaseName, ANOTHER_DATABASE_NAME)
 
     testObjectId(t, fastify.mongo.ObjectId)
     testClient(t, fastify.mongo.client)
@@ -155,7 +156,7 @@ test('{ url: NO_DATABASE_MONGODB_URL, database: ANOTHER_DATABASE_NAME }', t => {
     t.ok(fastify.mongo.client)
     t.ok(fastify.mongo.ObjectId)
     t.ok(fastify.mongo.db)
-    t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
+    t.equal(fastify.mongo.db.databaseName, ANOTHER_DATABASE_NAME)
 
     testObjectId(t, fastify.mongo.ObjectId)
     testClient(t, fastify.mongo.client)
@@ -172,7 +173,7 @@ test('{ url: MONGODB_URL, database: ANOTHER_DATABASE_NAME }', t => {
     t.ok(fastify.mongo.client)
     t.ok(fastify.mongo.ObjectId)
     t.ok(fastify.mongo.db)
-    t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
+    t.equal(fastify.mongo.db.databaseName, ANOTHER_DATABASE_NAME)
 
     testObjectId(t, fastify.mongo.ObjectId)
     testClient(t, fastify.mongo.client)
@@ -214,7 +215,7 @@ test('{ client: client, database: DATABASE_NAME }', t => {
         t.ok(fastify.mongo.client)
         t.ok(fastify.mongo.ObjectId)
         t.ok(fastify.mongo.db)
-        t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
+        t.equal(fastify.mongo.db.databaseName, ANOTHER_DATABASE_NAME)
 
         testObjectId(t, fastify.mongo.ObjectId)
         testClient(t, fastify.mongo.client)
@@ -265,12 +266,12 @@ test('{ client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', t
         t.ok(fastify.mongo.client)
         t.ok(fastify.mongo.ObjectId)
         t.ok(fastify.mongo.db)
-        t.equal(fastify.mongo.db.s.databaseName, ANOTHER_DATABASE_NAME)
+        t.equal(fastify.mongo.db.databaseName, ANOTHER_DATABASE_NAME)
 
         t.ok(fastify.mongo[CLIENT_NAME].client)
         t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
         t.ok(fastify.mongo[CLIENT_NAME].db)
-        t.equal(fastify.mongo[CLIENT_NAME].db.s.databaseName, ANOTHER_DATABASE_NAME)
+        t.equal(fastify.mongo[CLIENT_NAME].db.databaseName, ANOTHER_DATABASE_NAME)
 
         testObjectId(t, fastify.mongo.ObjectId)
         testClient(t, fastify.mongo.client)
@@ -353,17 +354,17 @@ test('double register with different name', t => {
       t.ok(fastify.mongo.client)
       t.ok(fastify.mongo.ObjectId)
       t.ok(fastify.mongo.db)
-      t.equal(fastify.mongo.db.s.databaseName, DATABASE_NAME)
+      t.equal(fastify.mongo.db.databaseName, DATABASE_NAME)
 
       t.ok(fastify.mongo.client1.client)
       t.ok(fastify.mongo.client1.ObjectId)
       t.ok(fastify.mongo.client1.db)
-      t.equal(fastify.mongo.client1.db.s.databaseName, DATABASE_NAME)
+      t.equal(fastify.mongo.client1.db.databaseName, DATABASE_NAME)
 
       t.ok(fastify.mongo.client2.client)
       t.ok(fastify.mongo.client2.ObjectId)
       t.ok(fastify.mongo.client2.db)
-      t.equal(fastify.mongo.client2.db.s.databaseName, ANOTHER_DATABASE_NAME)
+      t.equal(fastify.mongo.client2.db.databaseName, ANOTHER_DATABASE_NAME)
 
       testObjectId(t, fastify.mongo.ObjectId)
       testClient(t, fastify.mongo.client)
