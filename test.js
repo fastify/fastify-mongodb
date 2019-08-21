@@ -77,8 +77,7 @@ test('{ url: MONGODB_URL, name: CLIENT_NAME }', t => {
     t.ok(fastify.mongo.client)
     t.ok(fastify.mongo.ObjectId)
     t.ok(fastify.mongo.db)
-    t.equal(fastify.mongo.db.
-            databaseName, DATABASE_NAME)
+    t.equal(fastify.mongo.db.databaseName, DATABASE_NAME)
 
     t.ok(fastify.mongo[CLIENT_NAME].client)
     t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
