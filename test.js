@@ -184,7 +184,7 @@ test('{ client: client }', t => {
   t.plan(5 + 4 + 2)
 
   mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL,
-    { useNewUrlParser: true })
+    { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       t.teardown(client.close.bind(client))
       register(t, { client: client }, function (err, fastify) {
@@ -205,7 +205,7 @@ test('{ client: client, database: DATABASE_NAME }', t => {
   t.plan(6 + 4 + 2 + 2)
 
   mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL,
-    { useNewUrlParser: true })
+    { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       t.teardown(client.close.bind(client))
       register(t, { client: client, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
@@ -228,7 +228,7 @@ test('{ client: client, name: CLIENT_NAME }', t => {
   t.plan(8 + 4 + 2 + 4 + 2)
 
   mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL,
-    { useNewUrlParser: true })
+    { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       t.teardown(client.close.bind(client))
       register(t, { client: client, name: CLIENT_NAME }, function (err, fastify) {
@@ -256,7 +256,7 @@ test('{ client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', t
   t.plan(10 + 4 + 2 + 2 + 4 + 2 + 2)
 
   mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL,
-    { useNewUrlParser: true })
+    { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       t.teardown(client.close.bind(client))
       register(t, { client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
@@ -287,7 +287,7 @@ test('{ client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', t
 test('{ client: client } does not set onClose', t => {
   const fastify = Fastify()
   return mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL,
-    { useNewUrlParser: true })
+    { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       fastify.register(fastifyMongo, { client, database: DATABASE_NAME })
       return fastify.ready()
