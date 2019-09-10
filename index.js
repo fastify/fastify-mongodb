@@ -50,7 +50,10 @@ function decorateFastifyInstance (fastify, client, options, next) {
 }
 
 function fastifyMongodb (fastify, options, next) {
-  options = Object.assign({ useNewUrlParser: true }, options)
+  options = Object.assign({
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }, options)
 
   const forceClose = options.forceClose
   delete options.forceClose
