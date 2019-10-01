@@ -83,9 +83,9 @@ shuts down.
 This plugin decorates the `fastify` instance with a `mongo` object. That object has the
 following properties:
 
-- `client` is the [`MongoClient` instance](http://mongodb.github.io/node-mongodb-native/3.0/api/MongoClient.html)
-- `ObjectId` is the [`ObjectId` class](http://mongodb.github.io/node-mongodb-native/3.0/api/ObjectID.html)
-- `db` is the [`DB` instance](http://mongodb.github.io/node-mongodb-native/3.0/api/Db.html)
+- `client` is the [`MongoClient` instance](http://mongodb.github.io/node-mongodb-native/3.3/api/MongoClient.html)
+- `ObjectId` is the [`ObjectId` class](http://mongodb.github.io/node-mongodb-native/3.3/api/ObjectID.html)
+- `db` is the [`DB` instance](http://mongodb.github.io/node-mongodb-native/3.3/api/Db.html)
 
 The `db` property is added **only if**:
 - a `database` string option is given during the plugin registration.
