@@ -2,28 +2,29 @@ name: GitHub CI
 
 on: [push, pull_request]
 
-build:
-  runs-on: ubuntu-latest
+jobs:
+  build:
+    runs-on: ubuntu-latest
 
-  strategy:
-    matrix:
-      node: [10, 12, 14]
+    strategy:
+      matrix:
+        node: [10, 12, 14]
 
-  name: Node.js ${{ matrix.node }}
+    name: Node.js ${{ matrix.node }}
 
-  services:
-    mongodb:
-      image: mongo:3.4.3
-      ports:
-        - 27017:27017
+    services:
+      mongodb:
+        image: mongo:3.4.3
+        ports:
+          - 27017:27017
 
-  steps:
-  - uses: actions/checkout@v1
-    with:
-      node-version: ${{ matrix.node-version }}
+    steps:
+    - uses: actions/checkout@v1
+      with:
+        node-version: ${{ matrix.node-version }}
 
-  - name: Install
-    run: npm install
+    - name: Install
+      run: npm install
 
-  - name: Run tests      
-    run: npm run test
+    - name: Run tests      
+      run: npm run test
