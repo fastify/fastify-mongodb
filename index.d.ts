@@ -1,6 +1,5 @@
 import * as mongodb from 'mongodb';
-import * as http from 'http';
-import * as fastify from 'fastify';
+import fastify, { FastifyPlugin } from 'fastify';
 
 declare namespace fastifyMongodb {
   interface FastifyMongoObject {
@@ -45,20 +44,11 @@ declare namespace fastifyMongodb {
 }
 
 declare module 'fastify' {
-  interface FastifyInstance<
-    HttpServer = http.Server,
-    HttpRequest = http.IncomingMessage,
-    HttpResponse = http.ServerResponse
-  > {
+  interface FastifyInstance {
     mongo: fastifyMongodb.FastifyMongoObject & fastifyMongodb.FastifyMongoNestedObject;
   }
 }
 
-declare let fastifyMongodb: fastify.Plugin<
-  http.Server,
-  http.IncomingMessage,
-  http.ServerResponse,
-  fastifyMongodb.FastifyMongodbOptions
->;
+declare const fastifyMongodb: FastifyPlugin<fastifyMongodb.FastifyMongodbOptions>;
 
-export = fastifyMongodb;
+export default fastifyMongodb;
