@@ -1,5 +1,5 @@
-import fastify = require('fastify');
-import fastifyMongodb = require('../fastify-mongodb');
+import fastify from 'fastify';
+import fastifyMongodb from '../fastify-mongodb';
 
 const app = fastify();
 
