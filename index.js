@@ -87,10 +87,10 @@ function fastifyMongodb (fastify, options, next) {
 
   const optionalSettings = options.optionalSettings
   delete options.optionalSettings
-  if(optionalSettings){
-    options = Object.assign(extraOptions, options)
+  if (optionalSettings) {
+    options = Object.assign(optionalSettings, options)
   }
-  
+
   MongoClient.connect(url, options, function onConnect (err, client) {
     if (err) {
       next(err)
