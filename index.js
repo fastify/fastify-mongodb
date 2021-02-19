@@ -85,6 +85,12 @@ function fastifyMongodb (fastify, options, next) {
   const parsedDbName = urlTokens && urlTokens[1]
   const databaseName = database || parsedDbName
 
+  const optionalSettings = options.optionalSettings
+  delete options.optionalSettings
+  if(optionalSettings){
+    options = Object.assign(extraOptions, options)
+  }
+  
   MongoClient.connect(url, options, function onConnect (err, client) {
     if (err) {
       next(err)

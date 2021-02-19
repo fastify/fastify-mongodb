@@ -40,6 +40,10 @@ declare namespace fastifyMongodb {
      * Connection url
      */
     url?: string;
+    /**
+     * Optional MongoClient settings
+     */
+    optionalSettings?: object;
   }
 }
 
