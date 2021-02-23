@@ -21,7 +21,7 @@ declare namespace fastifyMongodb {
     [name: string]: FastifyMongoObject;
   }
 
-  interface FastifyMongodbOptions {
+  interface FastifyMongodbOptions extends mongodb.MongoClientOptions {
     /**
      * Force to close the mongodb connection when app stopped
      * @default false
@@ -40,10 +40,6 @@ declare namespace fastifyMongodb {
      * Connection url
      */
     url?: string;
-    /**
-     * Optional MongoClient settings
-     */
-    optionalSettings?: object;
   }
 }
 
