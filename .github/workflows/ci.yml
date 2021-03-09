@@ -19,7 +19,7 @@ jobs:
           - 27017:27017
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2.3.4
       with:
         node-version: ${{ matrix.node-version }}
 
