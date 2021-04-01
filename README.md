@@ -1,14 +1,17 @@
 # fastify-mongodb
 
-[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](http://standardjs.com/)  ![CI workflow](https://github.com/fastify/fastify-mongodb/workflows/CI%20workflow/badge.svg)
+![CI](https://github.com/fastify/fastify-mongodb/workflows/CI/badge.svg)
+[![NPM version](https://img.shields.io/npm/v/fastify-mongodb.svg?style=flat)](https://www.npmjs.com/package/fastify-mongodb)
+[![Known Vulnerabilities](https://snyk.io/test/github/fastify/fastify-mongodb/badge.svg)](https://snyk.io/test/github/fastify/fastify-mongodb)
+[![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
-Fastify MongoDB connection plugin, with this you can share the same MongoDb connection pool in every part of your server.
+Fastify MongoDB connection plugin; with this you can share the same MongoDB connection pool in every part of your server.
 
-Under the hood the official [mongodb](https://github.com/mongodb/node-mongodb-native) driver is used,
+Under the hood the official [MongoDB](https://github.com/mongodb/node-mongodb-native) driver is used,
 the options that you pass to `register` will be passed to the Mongo client.
-The `mongodb` driver version is 3.
+The `mongodb` driver is v3.x.x.
 
-If you don't provide the client by yourself (see below), the url option is *required*.
+If you do not provide the client by yourself (see below), the URL option is *required*.
 
 ## Install
 
@@ -74,7 +77,7 @@ mongodb.MongoClient.connect('mongodb://mongo/db')
 Notes: 
 * the passed `client` connection will **not** be closed when the Fastify server
 shuts down.
-* in order to terminate the mongodb connection you have to manually call the [fastify.close](https://www.fastify.io/docs/latest/Server/#close) method (for example for testing purposes, otherwise the test will hang).
+* in order to terminate the MongoDB connection you have to manually call the [fastify.close](https://www.fastify.io/docs/latest/Server/#close) method (for example for testing purposes, otherwise the test will hang).
 
 ## Reference
 
@@ -89,7 +92,7 @@ The `db` property is added **only if**:
 - a `database` string option is given during the plugin registration.
 - the connection string contains the database name. See the [Connection String URI Format](https://docs.mongodb.com/manual/reference/connection-string/#connection-string-uri-format)
 
-A `name` option can be used in order to connect to multiple mongodb clusters.
+A `name` option can be used in order to connect to multiple MongoDB clusters.
 
 ```js
 const fastify = require('fastify')()
@@ -115,8 +118,8 @@ fastify.get('/', function (req, res) {
 ## Acknowledgements
 
 This project is kindly sponsored by:
-- [nearForm](http://nearform.com)
-- [LetzDoIt](http://www.letzdoitapp.com/)
+- [nearForm](https://nearform.com)
+- [LetzDoIt](https://www.letzdoitapp.com/)
 
 ## License
 
