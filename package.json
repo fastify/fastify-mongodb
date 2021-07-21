@@ -39,6 +39,6 @@
   },
   "dependencies": {
     "fastify-plugin": "^3.0.0",
-    "mongodb": "^3.3.0"
+    "mongodb": "^4.0.1"
   }
 }
