@@ -298,7 +298,7 @@ test('{ client: client } does not set onClose', t => {
     .then(() => {
       const col = fastify.mongo.db.collection(COLLECTION_NAME)
       return col
-        .insertOne({ a: 1 })
+        .insertMany([{ a: 1 }])
         .then((r) => {
           t.equal(1, r.insertedCount)
         })
@@ -400,7 +400,7 @@ test('Immutable options', t => {
   const given = { url: MONGODB_URL, name: CLIENT_NAME, database: DATABASE_NAME }
   register(t, given, function (err, fastify) {
     t.error(err)
-    t.deepEqual(given, {
+    t.same(given, {
       url: MONGODB_URL,
       name: CLIENT_NAME,
       database: DATABASE_NAME
@@ -435,7 +435,7 @@ function testClient (t, client) {
 function testDatabase (t, db) {
   const col = db.collection(COLLECTION_NAME)
 
-  col.insertOne({ a: 1 }, (err, r) => {
+  col.insertMany([{ a: 1 }], (err, r) => {
     t.error(err)
     t.equal(1, r.insertedCount)
   })

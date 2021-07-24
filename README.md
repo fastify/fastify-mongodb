@@ -9,7 +9,7 @@ Fastify MongoDB connection plugin; with this you can share the same MongoDB conn
 
 Under the hood the official [MongoDB](https://github.com/mongodb/node-mongodb-native) driver is used,
 the options that you pass to `register` will be passed to the Mongo client.
-The `mongodb` driver is v3.x.x.
+The `mongodb` driver is v4.x.x.
 
 If you do not provide the client by yourself (see below), the URL option is *required*.
 
