@@ -38,6 +38,10 @@ fastify.get('/user/:id', function (req, reply) {
   const users = this.mongo.db.collection('users')
 
   users.findOne({ id: req.params.id }, (err, user) => {
+    if (err) {
+      reply.send(err)
+      return
+    }
     reply.send(user)
   })
 })
