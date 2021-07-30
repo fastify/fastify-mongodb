@@ -37,7 +37,7 @@ fastify.get('/user/:id', function (req, reply) {
   // Or this.mongo.client.db('mydb')
   const users = this.mongo.db.collection('users')
 
-  col.findOne({ id: req.params.id }, (err, user) => {
+  users.findOne({ id: req.params.id }, (err, user) => {
     reply.send(user)
   })
 })
