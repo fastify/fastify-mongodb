@@ -34,17 +34,16 @@ fastify.register(require('fastify-mongodb'), {
 })
 
 fastify.get('/user/:id', function (req, reply) {
-  // Or this.mongo.client.db('mydb')
-  const db = this.mongo.db
-  db.collection('users', onCollection)
+  // Or this.mongo.client.db('mydb').collection('users')
+  const users = this.mongo.db.collection('users')
 
-  function onCollection (err, col) {
-    if (err) return reply.send(err)
-
-    col.findOne({ id: req.params.id }, (err, user) => {
-      reply.send(user)
-    })
-  }
+  users.findOne({ id: req.params.id }, (err, user) => {
+    if (err) {
+      reply.send(err)
+      return
+    }
+    reply.send(user)
+  })
 })
 
 fastify.listen(3000, err => {
