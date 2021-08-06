@@ -1,5 +1,5 @@
-import type { FastifyPlugin } from 'fastify';
-import type { Db, MongoClient, ObjectId } from 'mongodb';
+import type { FastifyPluginCallback } from 'fastify';
+import type { Db, MongoClient, ObjectId, MongoClientOptions } from 'mongodb';
 
 export interface FastifyMongoObject {
   /**
@@ -20,7 +20,7 @@ export interface FastifyMongoNestedObject {
   [name: string]: FastifyMongoObject;
 }
 
-export interface FastifyMongodbOptions {
+export interface FastifyMongodbOptions extends MongoClientOptions {
   /**
    * Force to close the mongodb connection when app stopped
    * @default false
@@ -47,6 +47,6 @@ declare module 'fastify' {
   }
 }
 
-export const fastifyMongodb: FastifyPlugin<FastifyMongodbOptions>;
+export const fastifyMongodb: FastifyPluginCallback<FastifyMongodbOptions>;
 
 export default fastifyMongodb;
