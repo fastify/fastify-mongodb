@@ -102,4 +102,4 @@ module.exports = fp(fastifyMongodb, {
   name: 'fastify-mongodb'
 })
 
-module.exports.ObjectId = ObjectId;
+module.exports.ObjectId = ObjectId
