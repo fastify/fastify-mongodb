@@ -1,10 +1,7 @@
 'use strict'
 
 const fp = require('fastify-plugin')
-const MongoDb = require('mongodb')
-
-const MongoClient = MongoDb.MongoClient
-const ObjectId = MongoDb.ObjectId
+const { MongoClient, ObjectId } = require('mongodb')
 
 function decorateFastifyInstance (fastify, client, options, next) {
   const forceClose = options.forceClose
@@ -104,3 +101,5 @@ module.exports = fp(fastifyMongodb, {
   fastify: '>=1.0.0',
   name: 'fastify-mongodb'
 })
+
+module.exports.ObjectId = ObjectId;
