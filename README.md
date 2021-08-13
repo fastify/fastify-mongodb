@@ -87,6 +87,14 @@ following properties:
 - `ObjectId` is the [`ObjectId` class](http://mongodb.github.io/node-mongodb-native/3.3/api/ObjectID.html)
 - `db` is the [`DB` instance](http://mongodb.github.io/node-mongodb-native/3.3/api/Db.html)
 
+The `ObjectId` class can also be directly imported from the plugin as it gets re-exported from `mongodb`:
+
+```js
+const { ObjectId } = require('fastify-mongodb')
+
+const id = new ObjectId('some-id-here')
+```
+
 The `db` property is added **only if**:
 - a `database` string option is given during the plugin registration.
 - the connection string contains the database name. See the [Connection String URI Format](https://docs.mongodb.com/manual/reference/connection-string/#connection-string-uri-format)

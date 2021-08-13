@@ -4,6 +4,7 @@ const t = require('tap')
 const { test } = t
 const Fastify = require('fastify')
 const fastifyMongo = require('./index')
+const { ObjectId } = require('./index')
 
 const mongodb = require('mongodb')
 
@@ -13,6 +14,18 @@ const MONGODB_URL = 'mongodb://127.0.0.1/' + DATABASE_NAME
 const CLIENT_NAME = 'client_name'
 const ANOTHER_DATABASE_NAME = 'my_awesome_database'
 const COLLECTION_NAME = 'mycoll'
+
+test('re-export ObjectId', t => {
+  t.plan(4)
+
+  testObjectId(t, fastifyMongo.ObjectId)
+})
+
+test('re-export ObjectId destructured', t => {
+  t.plan(4)
+
+  testObjectId(t, ObjectId)
+})
 
 test('{ url: NO_DATABASE_MONGODB_URL }', t => {
   t.plan(5 + 4 + 2)
