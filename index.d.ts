@@ -1,5 +1,6 @@
 import type { FastifyPluginCallback } from 'fastify';
-import type { Db, MongoClient, ObjectId, MongoClientOptions } from 'mongodb';
+import type { Db, MongoClient, MongoClientOptions } from 'mongodb';
+import { ObjectId } from 'mongodb';
 
 export interface FastifyMongoObject {
   /**
@@ -50,3 +51,5 @@ declare module 'fastify' {
 export const fastifyMongodb: FastifyPluginCallback<FastifyMongodbOptions>;
 
 export default fastifyMongodb;
+
+export { ObjectId };

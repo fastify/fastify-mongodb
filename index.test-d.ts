@@ -1,5 +1,5 @@
 import fastify from 'fastify';
-import fastifyMongodb from '../fastify-mongodb';
+import fastifyMongodb, { ObjectId as reExportedObjectId } from '../fastify-mongodb';
 
 const app = fastify();
 
@@ -14,4 +14,5 @@ app
     const dbDb = app.mongo.db!;
     const ObjectId = app.mongo.ObjectId;
     const myId = new ObjectId('aaaa');
+    const myId2 = new reExportedObjectId('aaaa');
   });
