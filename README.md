@@ -37,7 +37,9 @@ fastify.get('/user/:id', function (req, reply) {
   // Or this.mongo.client.db('mydb').collection('users')
   const users = this.mongo.db.collection('users')
 
-  users.findOne({ id: req.params.id }, (err, user) => {
+  // if the id is an ObjectId format, you need to create a new ObjectId
+  const id = this.mongo.ObjectId(req.params.id)
+  users.findOne({ id }, (err, user) => {
     if (err) {
       reply.send(err)
       return
