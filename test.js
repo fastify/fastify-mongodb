@@ -422,7 +422,7 @@ test('Immutable options', t => {
 })
 
 test('timeout', t => {
-  t.plan(1)
+  t.plan(2)
 
   const fastify = Fastify()
   t.teardown(() => fastify.close())
