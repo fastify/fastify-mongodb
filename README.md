@@ -79,6 +79,7 @@ Notes:
 * the passed `client` connection will **not** be closed when the Fastify server
 shuts down.
 * in order to terminate the MongoDB connection you have to manually call the [fastify.close](https://www.fastify.io/docs/latest/Server/#close) method (for example for testing purposes, otherwise the test will hang).
+* `mongodb` connection timeout is reduce from 30s (default) to 7.5s in order throw error before `fastify` plugin timeout.
 
 ## Reference
 
