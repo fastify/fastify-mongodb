@@ -421,6 +421,20 @@ test('Immutable options', t => {
   })
 })
 
+test('timeout', t => {
+  t.plan(1)
+
+  const fastify = Fastify()
+  t.teardown(() => fastify.close())
+
+  fastify
+    .register(fastifyMongo, { url: 'mongodb://127.0.0.1:9999' })
+    .ready(err => {
+      t.ok(err)
+      t.equal(err.message, 'MongoServerSelectionError: connect ECONNREFUSED 127.0.0.1:9999')
+    })
+})
+
 function register (t, options, callback) {
   const fastify = Fastify()
   t.teardown(() => fastify.close())
