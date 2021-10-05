@@ -431,7 +431,7 @@ test('timeout', t => {
     .register(fastifyMongo, { url: 'mongodb://127.0.0.1:9999' })
     .ready(err => {
       t.ok(err)
-      t.equal(err.message, 'MongoServerSelectionError: connect ECONNREFUSED 127.0.0.1:9999')
+      t.equal(err.message, 'connect ECONNREFUSED 127.0.0.1:9999')
     })
 })
 
