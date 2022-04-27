@@ -331,7 +331,7 @@ test('{ url: "unknown://protocol" }', t => {
   t.plan(2)
   register(t, { url: 'unknown://protocol' }, function (err, fastify) {
     t.ok(err)
-    t.match(err.message, /Invalid connection string/)
+    t.match(err.message, /expected connection string/)
   })
 })
 
