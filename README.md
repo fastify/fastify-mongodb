@@ -1,7 +1,7 @@
-# fastify-mongodb
+# @fastify/mongodb
 
 ![CI](https://github.com/fastify/fastify-mongodb/workflows/CI/badge.svg)
-[![NPM version](https://img.shields.io/npm/v/fastify-mongodb.svg?style=flat)](https://www.npmjs.com/package/fastify-mongodb)
+[![NPM version](https://img.shields.io/npm/v/@fastify/mongodb.svg?style=flat)](https://www.npmjs.com/package/@fastify/mongodb)
 [![Known Vulnerabilities](https://snyk.io/test/github/fastify/fastify-mongodb/badge.svg)](https://snyk.io/test/github/fastify/fastify-mongodb)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
@@ -16,7 +16,7 @@ If you do not provide the client by yourself (see below), the URL option is *req
 ## Install
 
 ```
-npm i fastify-mongodb --save
+npm i @fastify/mongodb --save
 ```
 
 ## Usage
@@ -25,7 +25,7 @@ Add it to your project with `register` and you are done!
 ```js
 const fastify = require('fastify')()
 
-fastify.register(require('fastify-mongodb'), {
+fastify.register(require('@fastify/mongodb'), {
   // force to close the mongodb connection when app stopped
   // the default value is false
   forceClose: true,
@@ -61,7 +61,7 @@ mongodb.MongoClient.connect('mongodb://mongo/db')
   .then((client) => {
     const fastify = require('fastify')()
 
-    fastify.register(require('fastify-mongodb'), { client: client })
+    fastify.register(require('@fastify/mongodb'), { client: client })
       .register(function (fastify, opts, next) {
         const db = fastify.mongo.client.db('mydb')
         // ...
@@ -93,7 +93,7 @@ following properties:
 The `ObjectId` class can also be directly imported from the plugin as it gets re-exported from `mongodb`:
 
 ```js
-const { ObjectId } = require('fastify-mongodb')
+const { ObjectId } = require('@fastify/mongodb')
 
 const id = new ObjectId('some-id-here')
 ```
@@ -108,8 +108,8 @@ A `name` option can be used in order to connect to multiple MongoDB clusters.
 const fastify = require('fastify')()
 
 fastify
-  .register(require('fastify-mongodb'), { url: 'mongodb://mongo1/mydb', name: 'MONGO1' })
-  .register(require('fastify-mongodb'), { url: 'mongodb://mongo2/otherdb', name: 'MONGO2' })
+  .register(require('@fastify/mongodb'), { url: 'mongodb://mongo1/mydb', name: 'MONGO1' })
+  .register(require('@fastify/mongodb'), { url: 'mongodb://mongo2/otherdb', name: 'MONGO2' })
 
 fastify.get('/', function (req, res) {
   // This collection comes from "mongodb://mongo1/mydb"
