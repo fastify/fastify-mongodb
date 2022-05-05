@@ -14,9 +14,9 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - 12
           - 14
           - 16
+          - 18
     services:
       mongodb:
         image: mongo:5.0.0

@@ -6,7 +6,8 @@
   "scripts": {
     "coverage": "npm run unit -- --cov --coverage-report=html",
     "lint": "standard",
-    "mongo": "docker run -p 27017:27017 mongo:5.0.0",
+    "lint:fix": "standard --fix",
+    "mongo": "docker run --rm -d -p 27017:27017 mongo:5.0.0",
     "test": "npm run lint && npm run unit && npm run typescript",
     "typescript": "tsd",
     "unit": "tap test.js"
@@ -30,7 +31,7 @@
   "homepage": "https://github.com/fastify/fastify-mongodb#readme",
   "devDependencies": {
     "@types/node": "^17.0.0",
-    "fastify": "^3.0.0",
+    "fastify": "^4.0.0-rc.2",
     "pre-commit": "^1.2.2",
     "standard": "^17.0.0",
     "tap": "^16.1.0",

@@ -15,8 +15,8 @@ function decorateFastifyInstance (fastify, client, options, next) {
   }
 
   const mongo = {
-    client: client,
-    ObjectId: ObjectId
+    client,
+    ObjectId
   }
   if (name) {
     if (!fastify.mongo) {
@@ -63,9 +63,9 @@ function fastifyMongodb (fastify, options, next) {
   if (options.client) {
     decorateFastifyInstance(fastify, options.client, {
       newClient: false,
-      forceClose: forceClose,
-      database: database,
-      name: name
+      forceClose,
+      database,
+      name
     }, next)
     return
   }
@@ -89,9 +89,9 @@ function fastifyMongodb (fastify, options, next) {
 
     decorateFastifyInstance(fastify, client, {
       newClient: true,
-      forceClose: forceClose,
+      forceClose,
       database: databaseName,
-      name: name
+      name
     }, next)
   })
 }

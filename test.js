@@ -200,7 +200,7 @@ test('{ client: client }', t => {
     { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       t.teardown(client.close.bind(client))
-      register(t, { client: client }, function (err, fastify) {
+      register(t, { client }, function (err, fastify) {
         t.error(err)
         t.ok(fastify.mongo)
         t.ok(fastify.mongo.client)
@@ -221,7 +221,7 @@ test('{ client: client, database: DATABASE_NAME }', t => {
     { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       t.teardown(client.close.bind(client))
-      register(t, { client: client, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
+      register(t, { client, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
         t.error(err)
         t.ok(fastify.mongo)
         t.ok(fastify.mongo.client)
@@ -244,7 +244,7 @@ test('{ client: client, name: CLIENT_NAME }', t => {
     { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       t.teardown(client.close.bind(client))
-      register(t, { client: client, name: CLIENT_NAME }, function (err, fastify) {
+      register(t, { client, name: CLIENT_NAME }, function (err, fastify) {
         t.error(err)
         t.ok(fastify.mongo)
         t.ok(fastify.mongo.client)
@@ -272,7 +272,7 @@ test('{ client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', t
     { useNewUrlParser: true, useUnifiedTopology: true })
     .then(client => {
       t.teardown(client.close.bind(client))
-      register(t, { client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
+      register(t, { client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }, function (err, fastify) {
         t.error(err)
         t.ok(fastify.mongo)
         t.ok(fastify.mongo.client)
