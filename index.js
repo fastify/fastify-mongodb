@@ -97,8 +97,8 @@ function fastifyMongodb (fastify, options, next) {
 }
 
 module.exports = fp(fastifyMongodb, {
-  fastify: '>=1.0.0',
-  name: 'fastify-mongodb'
+  fastify: '^4.0.0',
+  name: '@fastify/mongodb'
 })
 
 module.exports.ObjectId = ObjectId
