@@ -2,7 +2,6 @@
 
 ![CI](https://github.com/fastify/fastify-mongodb/workflows/CI/badge.svg)
 [![NPM version](https://img.shields.io/npm/v/@fastify/mongodb.svg?style=flat)](https://www.npmjs.com/package/@fastify/mongodb)
-[![Known Vulnerabilities](https://snyk.io/test/github/fastify/fastify-mongodb/badge.svg)](https://snyk.io/test/github/fastify/fastify-mongodb)
 [![js-standard-style](https://img.shields.io/badge/code%20style-standard-brightgreen.svg?style=flat)](https://standardjs.com/)
 
 Fastify MongoDB connection plugin; with this you can share the same MongoDB connection pool in every part of your server.
