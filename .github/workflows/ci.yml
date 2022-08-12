@@ -12,46 +12,6 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    strategy:
-      matrix:
-        node-version: [14, 16, 18]
-    services:
-      mongodb:
-        image: mongo:5.0.0
-        ports:
-          - '27017:27017'
-    steps:
-      - name: Check out repo
-        uses: actions/checkout@v3
-        with:
-          persist-credentials: false
-
-      - name: Setup Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-
-      - name: Install dependencies
-        run: npm i --ignore-scripts
-
-      - name: Run tests
-        run: npm test
-
-  automerge:
-    name: Automerge Dependabot PRs
-    if: >
-        github.event_name == 'pull_request' &&
-        github.event.pull_request.user.login == 'dependabot[bot]'
-    needs: test
-    permissions:
-      pull-requests: write
-      contents: write
-    runs-on: ubuntu-latest
-    steps:
-      - uses: fastify/github-action-merge-dependabot@v3
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          target: major
+    uses: fastify/workflows/.github/workflows/plugins-ci-mongo.yml@v3
+    with:
+      license-check: true
