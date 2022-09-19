@@ -23,7 +23,7 @@ function decorateFastifyInstance (fastify, client, options) {
       fastify.decorate('mongo', mongo)
     }
     if (fastify.mongo[name]) {
-      throw new Error('Connection name already registered: ' + name)
+      throw Error('Connection name already registered: ' + name)
     }
 
     fastify.mongo[name] = mongo
