@@ -1,4 +1,4 @@
-import type { FastifyPluginCallback } from 'fastify';
+import type { FastifyPluginAsync } from 'fastify';
 import type { Db, MongoClient, MongoClientOptions } from 'mongodb';
 import { ObjectId } from 'mongodb';
 
@@ -48,7 +48,7 @@ declare module 'fastify' {
   }
 }
 
-export const fastifyMongodb: FastifyPluginCallback<FastifyMongodbOptions>;
+export const fastifyMongodb: FastifyPluginAsync<FastifyMongodbOptions>;
 
 export default fastifyMongodb;
 
