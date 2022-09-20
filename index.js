@@ -3,7 +3,7 @@
 const fp = require('fastify-plugin')
 const { MongoClient, ObjectId } = require('mongodb')
 
-function decorateFastifyInstance (fastify, client, options, next) {
+function decorateFastifyInstance (fastify, client, options) {
   const forceClose = options.forceClose
   const databaseName = options.database
   const name = options.name
@@ -23,15 +23,13 @@ function decorateFastifyInstance (fastify, client, options, next) {
       fastify.decorate('mongo', mongo)
     }
     if (fastify.mongo[name]) {
-      next(new Error('Connection name already registered: ' + name))
-      return
+      throw Error('Connection name already registered: ' + name)
     }
 
     fastify.mongo[name] = mongo
   } else {
     if (fastify.mongo) {
-      next(new Error('fastify-mongodb has already registered'))
-      return
+      throw Error('fastify-mongodb has already registered')
     }
   }
 
@@ -42,58 +40,40 @@ function decorateFastifyInstance (fastify, client, options, next) {
   if (!fastify.mongo) {
     fastify.decorate('mongo', mongo)
   }
-
-  next()
 }
 
-function fastifyMongodb (fastify, options, next) {
+async function fastifyMongodb (fastify, options) {
   options = Object.assign({
     serverSelectionTimeoutMS: 7500
   }, options)
+  const { forceClose, name, database, url, client, ...opts } = options
 
-  const forceClose = options.forceClose
-  delete options.forceClose
-
-  const name = options.name
-  delete options.name
-
-  const database = options.database
-  delete options.database
-
-  if (options.client) {
-    decorateFastifyInstance(fastify, options.client, {
+  if (client) {
+    decorateFastifyInstance(fastify, client, {
       newClient: false,
       forceClose,
       database,
       name
-    }, next)
-    return
-  }
-
-  const url = options.url
-  delete options.url
-  if (!url) {
-    next(new Error('`url` parameter is mandatory if no client is provided'))
-    return
-  }
-
-  const urlTokens = /\w\/([^?]*)/g.exec(url)
-  const parsedDbName = urlTokens && urlTokens[1]
-  const databaseName = database || parsedDbName
-
-  MongoClient.connect(url, options, function onConnect (err, client) {
-    if (err) {
-      next(err)
-      return
+    })
+  } else {
+    if (!url) {
+      throw Error('`url` parameter is mandatory if no client is provided')
     }
+
+    const urlTokens = /\w\/([^?]*)/g.exec(url)
+    const parsedDbName = urlTokens && urlTokens[1]
+    const databaseName = database || parsedDbName
+
+    const client = new MongoClient(url, opts)
+    await client.connect()
 
     decorateFastifyInstance(fastify, client, {
       newClient: true,
       forceClose,
       database: databaseName,
       name
-    }, next)
-  })
+    })
+  }
 }
 
 module.exports = fp(fastifyMongodb, {
