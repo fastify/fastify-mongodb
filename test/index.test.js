@@ -3,8 +3,8 @@
 const t = require('tap')
 const { test } = t
 const Fastify = require('fastify')
-const fastifyMongo = require('./index')
-const { ObjectId } = require('./index')
+const fastifyMongo = require('..')
+const { ObjectId } = require('..')
 
 const mongodb = require('mongodb')
 

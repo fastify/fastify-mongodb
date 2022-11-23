@@ -80,5 +80,7 @@ module.exports = fp(fastifyMongodb, {
   fastify: '4.x',
   name: '@fastify/mongodb'
 })
+module.exports.default = fastifyMongodb
+module.exports.fastifyMongodb = fastifyMongodb
 
 module.exports.ObjectId = ObjectId
