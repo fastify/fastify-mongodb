@@ -1,55 +1,62 @@
 import type { FastifyPluginAsync } from 'fastify';
 import type { Db, MongoClient, MongoClientOptions } from 'mongodb';
-import { ObjectId } from 'mongodb';
-
-export interface FastifyMongoObject {
-  /**
-   * Mongo client instance
-   */
-  client: MongoClient;
-  /**
-   * DB instance
-   */
-  db?: Db;
-  /**
-   * Mongo ObjectId class
-   */
-  ObjectId: typeof ObjectId;
-}
-
-export interface FastifyMongoNestedObject {
-  [name: string]: FastifyMongoObject;
-}
-
-export interface FastifyMongodbOptions extends MongoClientOptions {
-  /**
-   * Force to close the mongodb connection when app stopped
-   * @default false
-   */
-  forceClose?: boolean;
-  /**
-   * Database name to connect
-   */
-  database?: string;
-  name?: string;
-  /**
-   * Pre-configured instance of MongoClient
-   */
-  client?: MongoClient;
-  /**
-   * Connection url
-   */
-  url?: string;
-}
+import { ObjectId as MongodbObjectId } from 'mongodb';
 
 declare module 'fastify' {
   interface FastifyInstance {
-    mongo: FastifyMongoObject & FastifyMongoNestedObject;
+    mongo: fastifyMongodb.FastifyMongoObject & fastifyMongodb.FastifyMongoNestedObject;
   }
 }
 
-export const fastifyMongodb: FastifyPluginAsync<FastifyMongodbOptions>;
+type FastifyMongodb = FastifyPluginAsync<fastifyMongodb.FastifyMongodbOptions>;
 
-export default fastifyMongodb;
+declare namespace fastifyMongodb {
 
-export { ObjectId };
+  export interface FastifyMongoObject {
+    /**
+     * Mongo client instance
+     */
+    client: MongoClient;
+    /**
+     * DB instance
+     */
+    db?: Db;
+    /**
+     * Mongo ObjectId class
+     */
+    ObjectId: typeof ObjectId;
+  }
+
+  export interface FastifyMongoNestedObject {
+    [name: string]: FastifyMongoObject;
+  }
+
+  export interface FastifyMongodbOptions extends MongoClientOptions {
+    /**
+     * Force to close the mongodb connection when app stopped
+     * @default false
+     */
+    forceClose?: boolean;
+    /**
+     * Database name to connect
+     */
+    database?: string;
+    name?: string;
+    /**
+     * Pre-configured instance of MongoClient
+     */
+    client?: MongoClient;
+    /**
+     * Connection url
+     */
+    url?: string;
+  }
+
+  export class ObjectId extends MongodbObjectId {}
+
+  export const fastifyMongodb: FastifyMongodb
+  export { fastifyMongodb as default }
+}
+
+declare function fastifyMongodb(...params: Parameters<FastifyMongodb>): ReturnType<FastifyMongodb>
+export = fastifyMongodb

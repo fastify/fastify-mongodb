@@ -1,5 +1,7 @@
 import fastify from 'fastify';
 import fastifyMongodb, { ObjectId as reExportedObjectId } from '..';
+import { expectType } from "tsd";
+import { ObjectID } from 'bson';
 
 const app = fastify();
 
@@ -13,6 +15,6 @@ app
     app.mongo.client.db('test');
     app.mongo.db!;
     const ObjectId = app.mongo.ObjectId;
-    new ObjectId('aaaa');
-    new reExportedObjectId('aaaa');
+    expectType<ObjectID>(new reExportedObjectId('aaaa'))
+    expectType<ObjectID>(new ObjectId('aaa'))
   });
