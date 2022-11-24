@@ -3,14 +3,15 @@
   "version": "6.1.0",
   "description": "Fastify MongoDB connection plugin",
   "main": "index.js",
+  "types": "types/index.d.ts",
   "scripts": {
     "coverage": "npm run unit -- --cov --coverage-report=html",
     "lint": "standard",
     "lint:fix": "standard --fix",
     "mongo": "docker run --rm -d -p 27017:27017 mongo:5.0.0",
-    "test": "npm run lint && npm run unit && npm run typescript",
-    "typescript": "tsd",
-    "unit": "tap test.js"
+    "test": "npm run test:unit && npm run test:typescript",
+    "test:typescript": "tsd",
+    "test:unit": "tap"
   },
   "repository": {
     "type": "git",
