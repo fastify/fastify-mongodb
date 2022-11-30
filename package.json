@@ -1,6 +1,6 @@
 {
   "name": "@fastify/mongodb",
-  "version": "6.3.0",
+  "version": "6.2.0",
   "description": "Fastify MongoDB connection plugin",
   "main": "index.js",
   "types": "types/index.d.ts",
@@ -32,15 +32,15 @@
   "homepage": "https://github.com/fastify/fastify-mongodb#readme",
   "devDependencies": {
     "@fastify/pre-commit": "^2.0.2",
-    "@types/node": "^18.11.9",
+    "@types/node": "^18.0.0",
     "fastify": "^4.10.2",
     "standard": "^17.0.0",
-    "tap": "^16.3.2",
+    "tap": "^16.1.0",
     "tsd": "^0.25.0"
   },
   "dependencies": {
     "fastify-plugin": "^4.3.0",
-    "mongodb": "^4.12.1"
+    "mongodb": "^4.8.0"
   },
   "publishConfig": {
     "access": "public"
