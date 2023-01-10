@@ -83,4 +83,6 @@ module.exports = fp(fastifyMongodb, {
 module.exports.default = fastifyMongodb
 module.exports.fastifyMongodb = fastifyMongodb
 
+module.exports.mongodb = require('mongodb')
+
 module.exports.ObjectId = ObjectId

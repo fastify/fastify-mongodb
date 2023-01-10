@@ -27,6 +27,12 @@ test('re-export ObjectId destructured', t => {
   testObjectId(t, ObjectId)
 })
 
+test('export of mongodb', t => {
+  t.plan(2)
+  t.same(typeof fastifyMongo.mongodb.ObjectId, 'function')
+  t.same(fastifyMongo.mongodb.BSONType.array, 4)
+})
+
 test('{ url: NO_DATABASE_MONGODB_URL }', t => {
   t.plan(5 + 4 + 2)
 

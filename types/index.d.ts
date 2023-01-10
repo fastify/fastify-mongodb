@@ -1,5 +1,6 @@
 import type { FastifyPluginAsync } from 'fastify';
 import type { Db, MongoClient, MongoClientOptions } from 'mongodb';
+import mongodb from 'mongodb';
 import { ObjectId } from 'mongodb';
 
 declare module 'fastify' {
@@ -24,7 +25,7 @@ declare namespace fastifyMongodb {
     /**
      * Mongo ObjectId class
      */
-    ObjectId: typeof ObjectId;
+    ObjectId: typeof mongodb.ObjectId;
   }
 
   export interface FastifyMongoNestedObject {
@@ -52,7 +53,7 @@ declare namespace fastifyMongodb {
     url?: string;
   }
 
-  export { ObjectId }
+  export { ObjectId, mongodb }
 
   export const fastifyMongodb: FastifyMongodb
   export { fastifyMongodb as default }
