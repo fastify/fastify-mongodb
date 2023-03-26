@@ -1,7 +1,7 @@
+import { ObjectId } from 'bson';
 import fastify from 'fastify';
-import fastifyMongodb, { ObjectId as reExportedObjectId, mongodb } from '..';
 import { expectType } from "tsd";
-import { ObjectID } from 'bson';
+import fastifyMongodb, { mongodb, ObjectId as reExportedObjectId } from '..';
 
 const app = fastify();
 
@@ -15,8 +15,8 @@ app
     app.mongo.client.db('test');
     app.mongo.db!;
     const ObjectId = app.mongo.ObjectId;
-    expectType<ObjectID>(new reExportedObjectId('aaaa'))
-    expectType<ObjectID>(new ObjectId('aaa'))
+    expectType<ObjectId>(new reExportedObjectId('aaaa'))
+    expectType<ObjectId>(new ObjectId('aaa'))
   });
 
 expectType<typeof reExportedObjectId>(mongodb.ObjectId)
