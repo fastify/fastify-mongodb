@@ -43,7 +43,7 @@ fastify.get('/user/:id', async function (req, reply) {
     return user
     reply.send(user)
   } catch (err) {
-    reply.send(err)
+    return err
   }
 })
 
