@@ -8,7 +8,7 @@ Fastify MongoDB connection plugin; with this you can share the same MongoDB conn
 
 Under the hood the official [MongoDB](https://github.com/mongodb/node-mongodb-native) driver is used,
 the options that you pass to `register` will be passed to the Mongo client.
-The `mongodb` driver is v4.x.x.
+The `mongodb` driver is v5.x.x.
 
 If you do not provide the client by yourself (see below), the URL option is *required*.
 
@@ -32,19 +32,18 @@ fastify.register(require('@fastify/mongodb'), {
   url: 'mongodb://mongo/mydb'
 })
 
-fastify.get('/user/:id', function (req, reply) {
+fastify.get('/user/:id', async function (req, reply) {
   // Or this.mongo.client.db('mydb').collection('users')
   const users = this.mongo.db.collection('users')
 
   // if the id is an ObjectId format, you need to create a new ObjectId
   const id = this.mongo.ObjectId(req.params.id)
-  users.findOne({ id }, (err, user) => {
-    if (err) {
-      reply.send(err)
-      return
-    }
+  try {
+    const user = await users.findOne({ id })
     reply.send(user)
-  })
+  } catch (err) {
+    reply.send(err)
+  }
 })
 
 fastify.listen({ port: 3000 }, err => {
