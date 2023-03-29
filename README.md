@@ -41,7 +41,6 @@ fastify.get('/user/:id', async function (req, reply) {
   try {
     const user = await users.findOne({ id })
     return user
-    reply.send(user)
   } catch (err) {
     return err
   }
