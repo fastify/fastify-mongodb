@@ -40,6 +40,7 @@ fastify.get('/user/:id', async function (req, reply) {
   const id = this.mongo.ObjectId(req.params.id)
   try {
     const user = await users.findOne({ id })
+    return user
     reply.send(user)
   } catch (err) {
     reply.send(err)
