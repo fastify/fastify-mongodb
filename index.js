@@ -11,7 +11,9 @@ function decorateFastifyInstance (fastify, client, options) {
 
   if (newClient) {
     // done() is not needed because .close() returns a Promise
-    fastify.addHook('onClose', () => client.close(forceClose))
+    fastify.addHook('onClose', function closeMongoDb () {
+      return client.close(forceClose)
+    })
   }
 
   const mongo = {
