@@ -37,7 +37,7 @@ fastify.get('/user/:id', async function (req, reply) {
   const users = this.mongo.db.collection('users')
 
   // if the id is an ObjectId format, you need to create a new ObjectId
-  const id = this.mongo.ObjectId(req.params.id)
+  const id = new this.mongo.ObjectId(req.params.id)
   try {
     const user = await users.findOne({ id })
     return user
