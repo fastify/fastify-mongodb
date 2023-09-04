@@ -1,6 +1,6 @@
 {
   "name": "@fastify/mongodb",
-  "version": "7.0.0",
+  "version": "8.0.0",
   "description": "Fastify MongoDB connection plugin",
   "main": "index.js",
   "types": "types/index.d.ts",
