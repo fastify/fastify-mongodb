@@ -33,14 +33,14 @@
   "devDependencies": {
     "@fastify/pre-commit": "^2.0.2",
     "@types/node": "^20.1.0",
-    "fastify": "^4.0.0-rc.3",
+    "fastify": "^4.0.0",
     "standard": "^17.0.0",
     "tap": "^16.1.0",
     "tsd": "^0.28.0"
   },
   "dependencies": {
     "fastify-plugin": "^4.0.0",
-    "mongodb": "^5.0.0"
+    "mongodb": "^6.0.0"
   },
   "publishConfig": {
     "access": "public"
