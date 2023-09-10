@@ -7,7 +7,7 @@ const fastifyMongo = require('..')
 const { ObjectId } = require('..')
 
 const mongodb = require('mongodb')
-const assert = require('assert')
+const assert = require('node:assert')
 
 const NO_DATABASE_MONGODB_URL = 'mongodb://127.0.0.1'
 const DATABASE_NAME = 'test'
