@@ -227,7 +227,7 @@ test('{ url: MONGODB_URL, database: ANOTHER_DATABASE_NAME }', async (t) => {
 test('{ client: client }', async (t) => {
   t.plan(6)
 
-  const client = await mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  const client = await mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
   t.teardown(client.close.bind(client))
 
   const fastify = await register(t, { client })
@@ -243,7 +243,7 @@ test('{ client: client }', async (t) => {
 test('{ client: client, database: DATABASE_NAME }', async (t) => {
   t.plan(8)
 
-  const client = await mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  const client = await mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
   t.teardown(client.close.bind(client))
 
   const fastify = await register(t, { client, database: ANOTHER_DATABASE_NAME })
@@ -261,7 +261,7 @@ test('{ client: client, database: DATABASE_NAME }', async (t) => {
 test('{ client: client, name: CLIENT_NAME }', async (t) => {
   t.plan(11)
 
-  const client = await mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  const client = await mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
   t.teardown(client.close.bind(client))
 
   const fastify = await register(t, { client, name: CLIENT_NAME })
@@ -284,7 +284,7 @@ test('{ client: client, name: CLIENT_NAME }', async (t) => {
 test('{ client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', async (t) => {
   t.plan(15)
 
-  const client = await mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  const client = await mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
   t.teardown(client.close.bind(client))
 
   const fastify = await register(t, { client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME })
@@ -309,7 +309,7 @@ test('{ client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', a
 })
 
 test('{ client: client } does not set onClose', async (t) => {
-  const client = await mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  const client = await mongodb.MongoClient.connect(NO_DATABASE_MONGODB_URL)
   t.teardown(client.close.bind(client))
 
   const fastify = Fastify()
