@@ -4,10 +4,7 @@ const fp = require('fastify-plugin')
 const { MongoClient, ObjectId } = require('mongodb')
 
 function decorateFastifyInstance (fastify, client, options) {
-  const forceClose = options.forceClose
-  const databaseName = options.database
-  const name = options.name
-  const newClient = options.newClient
+  const { forceClose, database, name, newClient } = options
 
   if (newClient) {
     // done() is not needed because .close() returns a Promise
@@ -35,8 +32,8 @@ function decorateFastifyInstance (fastify, client, options) {
     }
   }
 
-  if (databaseName) {
-    mongo.db = client.db(databaseName)
+  if (database) {
+    mongo.db = client.db(database)
   }
 
   if (!fastify.mongo) {
