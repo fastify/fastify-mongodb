@@ -34,13 +34,16 @@
     "@fastify/pre-commit": "^2.0.2",
     "@types/node": "^20.6.2",
     "fastify": "^4.23.2",
+    "mongodb": "^6.1.0",
     "standard": "^17.1.0",
     "tap": "^16.1.0",
     "tsd": "^0.29.0"
   },
   "dependencies": {
-    "fastify-plugin": "^4.5.1",
-    "mongodb": "^6.1.0"
+    "fastify-plugin": "^4.5.1"
+  },
+  "peerDependencies": {
+    "mongodb": "^6"
   },
   "publishConfig": {
     "access": "public"
