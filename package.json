@@ -3,6 +3,7 @@
   "version": "8.0.0",
   "description": "Fastify MongoDB connection plugin",
   "main": "index.js",
+  "type": "commonjs",
   "types": "types/index.d.ts",
   "scripts": {
     "coverage": "npm run unit -- --cov --coverage-report=html",
