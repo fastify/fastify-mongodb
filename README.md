@@ -15,7 +15,7 @@ If you do not provide the client by yourself (see below), the URL option is *req
 ## Install
 
 ```
-npm i @fastify/mongodb
+npm i @fastify/mongodb mongodb
 ```
 
 ## Usage
