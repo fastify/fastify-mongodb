@@ -16,55 +16,52 @@ const CLIENT_NAME = 'client_name'
 const ANOTHER_DATABASE_NAME = 'my_awesome_database'
 const COLLECTION_NAME = 'mycoll'
 
-t.Test.prototype.addAssert('objectId', 1, function (ObjectId, message, extra) {
+
+function objectIdTest(t, ObjectId, message) {
   message = message || 'expect ObjectId value'
 
   const obj1 = new ObjectId()
-  assert.ok(obj1)
+  t.ok(obj1)
 
   const obj2 = new ObjectId(obj1)
-  assert.ok(obj2)
-  assert.ok(obj1.equals(obj2))
+  t.ok(obj2)
+  t.ok(obj1.equals(obj2))
 
   const obj3 = new ObjectId()
-  assert.ok(!obj1.equals(obj3))
+  t.ok(!obj1.equals(obj3))
+}
 
-  return this.pass(message)
-})
-
-t.Test.prototype.addAssert('client', 1, function (client, message, extra) {
+function clientTest(t, client, message) {
   message = message || 'expect client'
   const db = client.db(DATABASE_NAME)
 
   const col = db.collection(COLLECTION_NAME)
 
-  return this.resolves(async () => {
+  t.resolves(async () => {
     const r = await col.insertMany([{ a: 1 }])
     assert.strictEqual(1, r.insertedCount)
-  }, message, extra)
-})
+  }, message)
+}
 
-t.Test.prototype.addAssert('database', 1, function (db, message, extra) {
+function databaseTest(t, db, message) {
   message = message || 'expect database'
 
   const col = db.collection(COLLECTION_NAME)
 
-  return this.resolves(async () => {
+  t.resolves(async () => {
     const r = await col.insertMany([{ a: 1 }])
     assert.deepEqual(1, r.insertedCount)
-  }, message, extra)
-})
+  }, message)
+}
 
 test('re-export ObjectId', async (t) => {
   t.plan(1)
-
-  t.objectId(fastifyMongo.ObjectId)
+  t.test(async t => objectIdTest(t, fastifyMongo.ObjectId))
 })
 
 test('re-export ObjectId destructured', async (t) => {
   t.plan(1)
-
-  t.objectId(ObjectId)
+  t.test(async t => objectIdTest(t, ObjectId))
 })
 
 test('export of mongodb', async (t) => {
@@ -83,8 +80,8 @@ test('{ url: NO_DATABASE_MONGODB_URL }', async (t) => {
   t.ok(fastify.mongo.ObjectId)
   t.notOk(fastify.mongo.db)
 
-  t.objectId(fastify.mongo.ObjectId)
-  t.client(fastify.mongo.client)
+  t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client))
 })
 
 test('{ url: MONGODB_URL }', async (t) => {
@@ -97,9 +94,9 @@ test('{ url: MONGODB_URL }', async (t) => {
   t.ok(fastify.mongo.db)
   t.equal(fastify.mongo.db.databaseName, DATABASE_NAME)
 
-  t.objectId(fastify.mongo.ObjectId)
-  t.client(fastify.mongo.client)
-  t.database(fastify.mongo.db)
+  t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client))
+  t.test(async t => databaseTest(t, fastify.mongo.db))
 })
 
 test('{ url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME }', async (t) => {
@@ -115,11 +112,11 @@ test('{ url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME }', async (t) => {
   t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
   t.notOk(fastify.mongo[CLIENT_NAME].db)
 
-  t.objectId(fastify.mongo.ObjectId)
-  t.client(fastify.mongo.client)
+  t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client))
 
-  t.objectId(fastify.mongo[CLIENT_NAME].ObjectId)
-  t.client(fastify.mongo[CLIENT_NAME].client)
+  t.test(async t => objectIdTest(t, fastify.mongo[CLIENT_NAME].ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo[CLIENT_NAME].client))
 })
 
 test('{ url: MONGODB_URL, name: CLIENT_NAME }', async (t) => {
@@ -137,13 +134,13 @@ test('{ url: MONGODB_URL, name: CLIENT_NAME }', async (t) => {
   t.ok(fastify.mongo[CLIENT_NAME].db)
   t.equal(fastify.mongo[CLIENT_NAME].db.databaseName, DATABASE_NAME)
 
-  t.objectId(fastify.mongo.ObjectId)
-  t.client(fastify.mongo.client)
-  t.database(fastify.mongo.db)
+  t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client))
+  t.test(async t => databaseTest(t, fastify.mongo.db))
 
-  t.objectId(fastify.mongo[CLIENT_NAME].ObjectId)
-  t.client(fastify.mongo[CLIENT_NAME].client)
-  t.database(fastify.mongo[CLIENT_NAME].db)
+  t.test(async t => objectIdTest(t, fastify.mongo[CLIENT_NAME].ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo[CLIENT_NAME].client))
+  t.test(async t => databaseTest(t, fastify.mongo[CLIENT_NAME].db))
 })
 
 test('{ url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', async (t) => {
@@ -161,13 +158,13 @@ test('{ url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATAB
   t.ok(fastify.mongo[CLIENT_NAME].db)
   t.equal(fastify.mongo[CLIENT_NAME].db.databaseName, ANOTHER_DATABASE_NAME)
 
-  t.objectId(fastify.mongo.ObjectId)
-  t.client(fastify.mongo.client)
-  t.database(fastify.mongo.db)
+  t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client))
+  t.test(async t => databaseTest(t, fastify.mongo.db))
 
-  t.objectId(fastify.mongo[CLIENT_NAME].ObjectId)
-  t.client(fastify.mongo[CLIENT_NAME].client)
-  t.database(fastify.mongo[CLIENT_NAME].db)
+  t.test(async t => objectIdTest(t, fastify.mongo[CLIENT_NAME].ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo[CLIENT_NAME].client))
+  t.test(async t => databaseTest(t, fastify.mongo[CLIENT_NAME].db))
 })
 
 test('{ url: MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', async (t) => {
@@ -185,13 +182,13 @@ test('{ url: MONGODB_URL, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }',
   t.ok(fastify.mongo[CLIENT_NAME].db)
   t.equal(fastify.mongo[CLIENT_NAME].db.databaseName, ANOTHER_DATABASE_NAME)
 
-  t.objectId(fastify.mongo.ObjectId)
-  t.client(fastify.mongo.client)
-  t.database(fastify.mongo.db)
+  t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client))
+  t.test(async t => databaseTest(t, fastify.mongo.db))
 
-  t.objectId(fastify.mongo[CLIENT_NAME].ObjectId)
-  t.client(fastify.mongo[CLIENT_NAME].client)
-  t.database(fastify.mongo[CLIENT_NAME].db)
+  t.test(async t => objectIdTest(t, fastify.mongo[CLIENT_NAME].ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo[CLIENT_NAME].client))
+  t.test(async t => databaseTest(t, fastify.mongo[CLIENT_NAME].db))
 })
 
 test('{ url: NO_DATABASE_MONGODB_URL, database: ANOTHER_DATABASE_NAME }', async (t) => {
@@ -204,9 +201,9 @@ test('{ url: NO_DATABASE_MONGODB_URL, database: ANOTHER_DATABASE_NAME }', async 
   t.ok(fastify.mongo.db)
   t.equal(fastify.mongo.db.databaseName, ANOTHER_DATABASE_NAME)
 
-  t.objectId(fastify.mongo.ObjectId)
-  t.client(fastify.mongo.client)
-  t.database(fastify.mongo.db)
+  t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client))
+  t.test(async t => databaseTest(t, fastify.mongo.db))
 })
 
 test('{ url: MONGODB_URL, database: ANOTHER_DATABASE_NAME }', async (t) => {
@@ -219,9 +216,9 @@ test('{ url: MONGODB_URL, database: ANOTHER_DATABASE_NAME }', async (t) => {
   t.ok(fastify.mongo.db)
   t.equal(fastify.mongo.db.databaseName, ANOTHER_DATABASE_NAME)
 
-  t.objectId(fastify.mongo.ObjectId)
-  t.client(fastify.mongo.client)
-  t.database(fastify.mongo.db)
+  t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client))
+  t.test(async t => databaseTest(t, fastify.mongo.db))
 })
 
 test('{ client: client }', async (t) => {
@@ -236,8 +233,8 @@ test('{ client: client }', async (t) => {
   t.ok(fastify.mongo.ObjectId)
   t.notOk(fastify.mongo.db)
 
-  t.objectId(fastify.mongo.ObjectId)
-  t.client(fastify.mongo.client)
+  t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client))
 })
 
 test('{ client: client, database: DATABASE_NAME }', async (t) => {
@@ -253,9 +250,9 @@ test('{ client: client, database: DATABASE_NAME }', async (t) => {
   t.ok(fastify.mongo.db)
   t.equal(fastify.mongo.db.databaseName, ANOTHER_DATABASE_NAME)
 
-  t.objectId(fastify.mongo.ObjectId)
-  t.client(fastify.mongo.client)
-  t.database(fastify.mongo.db)
+  t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client))
+  t.test(async t => databaseTest(t, fastify.mongo.db))
 })
 
 test('{ client: client, name: CLIENT_NAME }', async (t) => {
@@ -274,11 +271,11 @@ test('{ client: client, name: CLIENT_NAME }', async (t) => {
   t.ok(fastify.mongo[CLIENT_NAME].ObjectId)
   t.notOk(fastify.mongo[CLIENT_NAME].db)
 
-  t.objectId(fastify.mongo.ObjectId)
-  t.client(fastify.mongo.client)
+  t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client))
 
-  t.objectId(fastify.mongo[CLIENT_NAME].ObjectId)
-  t.client(fastify.mongo[CLIENT_NAME].client)
+  t.test(async t => objectIdTest(t, fastify.mongo[CLIENT_NAME].ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo[CLIENT_NAME].client))
 })
 
 test('{ client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', async (t) => {
@@ -299,13 +296,13 @@ test('{ client: client, name: CLIENT_NAME, database: ANOTHER_DATABASE_NAME }', a
   t.ok(fastify.mongo[CLIENT_NAME].db)
   t.equal(fastify.mongo[CLIENT_NAME].db.databaseName, ANOTHER_DATABASE_NAME)
 
-  t.objectId(fastify.mongo.ObjectId)
-  t.client(fastify.mongo.client)
-  t.database(fastify.mongo.db)
+  t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client))
+  t.test(async t => databaseTest(t, fastify.mongo.db))
 
-  t.objectId(fastify.mongo[CLIENT_NAME].ObjectId)
-  t.client(fastify.mongo[CLIENT_NAME].client)
-  t.database(fastify.mongo[CLIENT_NAME].db)
+  t.test(async t => objectIdTest(t, fastify.mongo[CLIENT_NAME].ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo[CLIENT_NAME].client))
+  t.test(async t => databaseTest(t, fastify.mongo[CLIENT_NAME].db))
 })
 
 test('{ client: client } does not set onClose', async (t) => {
@@ -317,7 +314,7 @@ test('{ client: client } does not set onClose', async (t) => {
   await fastify.ready()
   await fastify.close()
 
-  t.database(fastify.mongo.db)
+  t.test(async t => databaseTest(t, fastify.mongo.db))
 })
 
 test('{ }', async (t) => {
@@ -385,17 +382,17 @@ test('double register with different name', async (t) => {
   t.ok(fastify.mongo.client2.db)
   t.equal(fastify.mongo.client2.db.databaseName, ANOTHER_DATABASE_NAME)
 
-  t.objectId(fastify.mongo.ObjectId)
-  t.client(fastify.mongo.client)
-  t.database(fastify.mongo.db)
+  t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client))
+  t.test(async t => databaseTest(t, fastify.mongo.db))
 
-  t.objectId(fastify.mongo.client1.ObjectId)
-  t.client(fastify.mongo.client1.client)
-  t.database(fastify.mongo.client1.db)
+  t.test(async t => objectIdTest(t, fastify.mongo.client1.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client1.client))
+  t.test(async t => databaseTest(t, fastify.mongo.client1.db))
 
-  t.objectId(fastify.mongo.client2.ObjectId)
-  t.client(fastify.mongo.client2.client)
-  t.database(fastify.mongo.client2.db)
+  t.test(async t => objectIdTest(t, fastify.mongo.client2.ObjectId))
+  t.test(async t => clientTest(t, fastify.mongo.client2.client))
+  t.test(async t => databaseTest(t, fastify.mongo.client2.db))
 })
 
 test('double register with the same name', async (t) => {
@@ -442,6 +439,7 @@ test('timeout', async (t) => {
     t.equal(err.message, 'connect ECONNREFUSED 127.0.0.1:9999')
   }
 })
+
 
 async function register (t, options) {
   const fastify = Fastify()
