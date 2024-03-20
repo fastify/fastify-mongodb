@@ -16,8 +16,7 @@ const CLIENT_NAME = 'client_name'
 const ANOTHER_DATABASE_NAME = 'my_awesome_database'
 const COLLECTION_NAME = 'mycoll'
 
-
-function objectIdTest(t, ObjectId, message) {
+function objectIdTest (t, ObjectId, message) {
   message = message || 'expect ObjectId value'
 
   const obj1 = new ObjectId()
@@ -31,7 +30,7 @@ function objectIdTest(t, ObjectId, message) {
   t.ok(!obj1.equals(obj3))
 }
 
-function clientTest(t, client, message) {
+function clientTest (t, client, message) {
   message = message || 'expect client'
   const db = client.db(DATABASE_NAME)
 
@@ -43,7 +42,7 @@ function clientTest(t, client, message) {
   }, message)
 }
 
-function databaseTest(t, db, message) {
+function databaseTest (t, db, message) {
   message = message || 'expect database'
 
   const col = db.collection(COLLECTION_NAME)
@@ -439,7 +438,6 @@ test('timeout', async (t) => {
     t.equal(err.message, 'connect ECONNREFUSED 127.0.0.1:9999')
   }
 })
-
 
 async function register (t, options) {
   const fastify = Fastify()
