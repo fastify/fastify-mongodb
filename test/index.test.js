@@ -17,6 +17,7 @@ const ANOTHER_DATABASE_NAME = 'my_awesome_database'
 const COLLECTION_NAME = 'mycoll'
 
 function objectIdTest (t, ObjectId, message) {
+  t.plan(4)
   message = message || 'expect ObjectId value'
 
   const obj1 = new ObjectId()
@@ -31,6 +32,7 @@ function objectIdTest (t, ObjectId, message) {
 }
 
 function clientTest (t, client, message) {
+  t.plan(1)
   message = message || 'expect client'
   const db = client.db(DATABASE_NAME)
 
@@ -43,6 +45,7 @@ function clientTest (t, client, message) {
 }
 
 function databaseTest (t, db, message) {
+  t.plan(1)
   message = message || 'expect database'
 
   const col = db.collection(COLLECTION_NAME)
