@@ -32,16 +32,16 @@
   },
   "homepage": "https://github.com/fastify/fastify-mongodb#readme",
   "devDependencies": {
-    "@fastify/pre-commit": "^2.0.2",
-    "@types/node": "^20.6.2",
-    "fastify": "^4.23.2",
+    "@fastify/pre-commit": "^2.1.0",
+    "@types/node": "^20.11.30",
+    "fastify": "^4.26.2",
     "standard": "^17.1.0",
-    "tap": "^16.1.0",
+    "tap": "^18.7.1",
     "tsd": "^0.31.0"
   },
   "dependencies": {
     "fastify-plugin": "^4.5.1",
-    "mongodb": "^6.1.0"
+    "mongodb": "^6.5.0"
   },
   "publishConfig": {
     "access": "public"
