@@ -37,7 +37,7 @@
     "fastify": "^4.26.2",
     "standard": "^17.1.0",
     "tap": "^18.7.1",
-    "tsd": "^0.30.7"
+    "tsd": "^0.31.0"
   },
   "dependencies": {
     "fastify-plugin": "^4.5.1",
