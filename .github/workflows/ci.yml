@@ -17,7 +17,7 @@ on:
 
 jobs:
   test:
-    uses: fastify/workflows/.github/workflows/plugins-ci-mongo.yml@7993e1ea858b5c3ceff1aa154fa44b892f311ac3
+    uses: fastify/workflows/.github/workflows/plugins-ci-mongo.yml@v4.1.0
     with:
       lint: true
       license-check: true
