@@ -76,7 +76,7 @@ async function fastifyMongodb (fastify, options) {
 }
 
 module.exports = fp(fastifyMongodb, {
-  fastify: '4.x',
+  fastify: '5.x',
   name: '@fastify/mongodb'
 })
 module.exports.default = fastifyMongodb
