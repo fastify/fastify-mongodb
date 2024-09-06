@@ -1,6 +1,6 @@
 {
   "name": "@fastify/mongodb",
-  "version": "9.0.0-pre.fv5.2",
+  "version": "9.0.0",
   "description": "Fastify MongoDB connection plugin",
   "main": "index.js",
   "type": "commonjs",
@@ -34,13 +34,13 @@
   "devDependencies": {
     "@fastify/pre-commit": "^2.1.0",
     "@types/node": "^22.0.0",
-    "fastify": "^5.0.0-alpha.3",
+    "fastify": "^5.0.0-alpha.4",
     "standard": "^17.1.0",
     "tap": "^18.7.1",
     "tsd": "^0.31.0"
   },
   "dependencies": {
-    "fastify-plugin": "^5.0.0-pre.fv5.1",
+    "fastify-plugin": "^5.0.0",
     "mongodb": "^6.5.0"
   },
   "publishConfig": {
