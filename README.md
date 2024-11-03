@@ -19,7 +19,7 @@ npm i @fastify/mongodb
 ```
 
 ## Usage
-Add it to your project with `register` and you are done!  
+Add it to your project with `register` and you are done!
 
 ```js
 const fastify = require('fastify')()
@@ -28,7 +28,7 @@ fastify.register(require('@fastify/mongodb'), {
   // force to close the mongodb connection when app stopped
   // the default value is false
   forceClose: true,
-  
+
   url: 'mongodb://mongo/mydb'
 })
 
@@ -73,7 +73,7 @@ mongodb.MongoClient.connect('mongodb://mongo/db')
   })
 ```
 
-Notes: 
+Notes:
 * the passed `client` connection will **not** be closed when the Fastify server
 shuts down.
 * in order to terminate the MongoDB connection you have to manually call the [fastify.close](https://fastify.dev/docs/latest/Reference/Server/#close) method (for example for testing purposes, otherwise the test will hang).
