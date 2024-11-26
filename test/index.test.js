@@ -74,7 +74,7 @@ test('{ url: NO_DATABASE_MONGODB_URL }', async (t) => {
   t.assert.ok(fastify.mongo)
   t.assert.ok(fastify.mongo.client)
   t.assert.ok(fastify.mongo.ObjectId)
-  t.assert.ok(!fastify.mongo.db)
+  t.assert.ifError(fastify.mongo.db)
 
   await t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
   await t.test(async t => clientTest(t, fastify.mongo.client))
@@ -102,11 +102,11 @@ test('{ url: NO_DATABASE_MONGODB_URL, name: CLIENT_NAME }', async (t) => {
   t.assert.ok(fastify.mongo)
   t.assert.ok(fastify.mongo.client)
   t.assert.ok(fastify.mongo.ObjectId)
-  t.assert.ok(!fastify.mongo.db)
+  t.assert.ifError(fastify.mongo.db)
 
   t.assert.ok(fastify.mongo[CLIENT_NAME].client)
   t.assert.ok(fastify.mongo[CLIENT_NAME].ObjectId)
-  t.assert.ok(!fastify.mongo[CLIENT_NAME].db)
+  t.assert.ifError(fastify.mongo[CLIENT_NAME].db)
 
   await t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
   await t.test(async t => clientTest(t, fastify.mongo.client))
@@ -227,7 +227,7 @@ test('{ client: client }', async (t) => {
   t.assert.ok(fastify.mongo)
   t.assert.ok(fastify.mongo.client)
   t.assert.ok(fastify.mongo.ObjectId)
-  t.assert.ok(!fastify.mongo.db)
+  t.assert.ifError(fastify.mongo.db)
 
   await t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
   await t.test(async t => clientTest(t, fastify.mongo.client))
@@ -261,11 +261,11 @@ test('{ client: client, name: CLIENT_NAME }', async (t) => {
   t.assert.ok(fastify.mongo)
   t.assert.ok(fastify.mongo.client)
   t.assert.ok(fastify.mongo.ObjectId)
-  t.assert.ok(!fastify.mongo.db)
+  t.assert.ifError(fastify.mongo.db)
 
   t.assert.ok(fastify.mongo[CLIENT_NAME].client)
   t.assert.ok(fastify.mongo[CLIENT_NAME].ObjectId)
-  t.assert.ok(!fastify.mongo[CLIENT_NAME].db)
+  t.assert.ifError(fastify.mongo[CLIENT_NAME].db)
 
   await t.test(async t => objectIdTest(t, fastify.mongo.ObjectId))
   await t.test(async t => clientTest(t, fastify.mongo.client))
