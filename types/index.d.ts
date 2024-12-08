@@ -1,7 +1,7 @@
-import type { FastifyPluginAsync } from 'fastify';
-import type { Db, MongoClient, MongoClientOptions } from 'mongodb';
-import mongodb from 'mongodb';
-import { ObjectId } from 'mongodb';
+import type { FastifyPluginAsync } from 'fastify'
+import type { Db, MongoClient, MongoClientOptions } from 'mongodb'
+import mongodb from 'mongodb'
+import { ObjectId } from 'mongodb'
 
 declare module 'fastify' {
   interface FastifyInstance {
@@ -9,7 +9,7 @@ declare module 'fastify' {
   }
 }
 
-type FastifyMongodb = FastifyPluginAsync<fastifyMongodb.FastifyMongodbOptions>;
+type FastifyMongodb = FastifyPluginAsync<fastifyMongodb.FastifyMongodbOptions>
 
 declare namespace fastifyMongodb {
 
@@ -59,5 +59,5 @@ declare namespace fastifyMongodb {
   export { fastifyMongodb as default }
 }
 
-declare function fastifyMongodb(...params: Parameters<FastifyMongodb>): ReturnType<FastifyMongodb>
+declare function fastifyMongodb (...params: Parameters<FastifyMongodb>): ReturnType<FastifyMongodb>
 export = fastifyMongodb
