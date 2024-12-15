@@ -1,9 +1,9 @@
-import { ObjectId } from 'bson';
-import fastify from 'fastify';
-import { expectType } from "tsd";
-import fastifyMongodb, { mongodb, ObjectId as reExportedObjectId } from '..';
+import { ObjectId } from 'bson'
+import fastify from 'fastify'
+import { expectNotType, expectType } from 'tsd'
+import fastifyMongodb, { mongodb, ObjectId as ReExportedObjectId } from '..'
 
-const app = fastify();
+const app = fastify()
 
 app
   .register(fastifyMongodb, {
@@ -11,13 +11,13 @@ app
     name: 'db',
     url: 'mongodb://localhost:27017/testdb',
   })
-  .after((err) => {
-    app.mongo.client.db('test');
-    app.mongo.db!;
-    const ObjectId = app.mongo.ObjectId;
-    expectType<ObjectId>(new reExportedObjectId('aaaa'))
+  .after((_err) => {
+    app.mongo.client.db('test')
+    expectNotType<undefined>(app.mongo.db)
+    const ObjectId = app.mongo.ObjectId
+    expectType<ObjectId>(new ReExportedObjectId('aaaa'))
     expectType<ObjectId>(new ObjectId('aaa'))
-  });
+  })
 
-expectType<typeof reExportedObjectId>(mongodb.ObjectId)
+expectType<typeof ReExportedObjectId>(mongodb.ObjectId)
 expectType<4>(mongodb.BSONType.array)
