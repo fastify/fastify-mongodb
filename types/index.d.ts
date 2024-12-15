@@ -1,7 +1,6 @@
 import type { FastifyPluginAsync } from 'fastify'
 import type { Db, MongoClient, MongoClientOptions } from 'mongodb'
-import mongodb from 'mongodb'
-import { ObjectId } from 'mongodb'
+import mongodb, { ObjectId } from 'mongodb'
 
 declare module 'fastify' {
   interface FastifyInstance {
