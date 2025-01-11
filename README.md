@@ -76,8 +76,8 @@ mongodb.MongoClient.connect('mongodb://mongo/db')
 Notes:
 * the passed `client` connection will **not** be closed when the Fastify server
 shuts down.
-* in order to terminate the MongoDB connection you have to manually call the [fastify.close](https://fastify.dev/docs/latest/Reference/Server/#close) method (for example for testing purposes, otherwise the test will hang).
-* `mongodb` connection timeout is reduce from 30s (default) to 7.5s in order throw error before `fastify` plugin timeout.
+* to terminate the MongoDB connection you have to manually call the [fastify.close](https://fastify.dev/docs/latest/Reference/Server/#close) method (for example for testing purposes, otherwise the test will hang).
+* `mongodb` connection timeout is reduced from 30s (default) to 7.5s to throw an error before `fastify` plugin timeout.
 
 ## Reference
 
@@ -100,7 +100,7 @@ The `db` property is added **only if**:
 - a `database` string option is given during the plugin registration.
 - the connection string contains the database name. See the [Connection String URI Format](https://docs.mongodb.com/manual/reference/connection-string/#connection-string-uri-format)
 
-A `name` option can be used in order to connect to multiple MongoDB clusters.
+A `name` option can be used to connect to multiple MongoDB clusters.
 
 ```js
 const fastify = require('fastify')()
@@ -123,7 +123,7 @@ fastify.get('/', function (req, res) {
 })
 ```
 
-## Acknowledgements
+## Acknowledgments
 
 This project is kindly sponsored by:
 - [nearForm](https://nearform.com)
