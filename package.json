@@ -6,10 +6,10 @@
   "type": "commonjs",
   "types": "types/index.d.ts",
   "scripts": {
-    "coverage": "npm run unit -- --cov --coverage-report=html",
+    "coverage": "c8 --reporter=html node --test",
     "lint": "eslint",
     "lint:fix": "eslint --fix",
-    "mongo": "docker run --rm -d -p 27017:27017 mongo:5.0.0",
+    "mongo": "docker run --rm -d -p 27017:27017 mongo:8.0.0",
     "test": "npm run test:unit && npm run test:typescript",
     "test:typescript": "tsd",
     "test:unit": "c8 --100 node --test"

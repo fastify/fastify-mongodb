@@ -8,17 +8,18 @@ Fastify MongoDB connection plugin; with this you can share the same MongoDB conn
 
 Under the hood the official [MongoDB](https://github.com/mongodb/node-mongodb-native) driver is used,
 the options that you pass to `register` will be passed to the Mongo client.
-The `mongodb` driver is v6.x.x.
+The `mongodb` driver is v7.x.x.
 
 If you do not provide the client by yourself (see below), the URL option is *required*.
 
 ## Install
 
-```
+```bash
 npm i @fastify/mongodb
 ```
 
 ## Usage
+
 Add it to your project with `register` and you are done!
 
 ```js
@@ -74,6 +75,7 @@ mongodb.MongoClient.connect('mongodb://mongo/db')
 ```
 
 Notes:
+
 * the passed `client` connection will **not** be closed when the Fastify server
 shuts down.
 * to terminate the MongoDB connection you have to manually call the [fastify.close](https://fastify.dev/docs/latest/Reference/Server/#close) method (for example for testing purposes, otherwise the test will hang).
@@ -84,9 +86,9 @@ shuts down.
 This plugin decorates the `fastify` instance with a `mongo` object. That object has the
 following properties:
 
-- `client` is the [`MongoClient` instance](http://mongodb.github.io/node-mongodb-native/3.3/api/MongoClient.html)
-- `ObjectId` is the [`ObjectId` class](http://mongodb.github.io/node-mongodb-native/3.3/api/ObjectID.html)
-- `db` is the [`DB` instance](http://mongodb.github.io/node-mongodb-native/3.3/api/Db.html)
+* `client` is the [`MongoClient` instance](http://mongodb.github.io/node-mongodb-native/3.3/api/MongoClient.html)
+* `ObjectId` is the [`ObjectId` class](http://mongodb.github.io/node-mongodb-native/3.3/api/ObjectID.html)
+* `db` is the [`DB` instance](http://mongodb.github.io/node-mongodb-native/3.3/api/Db.html)
 
 The `ObjectId` class can also be directly imported from the plugin as it gets re-exported from `mongodb`:
 
@@ -97,8 +99,9 @@ const id = new ObjectId('some-id-here')
 ```
 
 The `db` property is added **only if**:
-- a `database` string option is given during the plugin registration.
-- the connection string contains the database name. See the [Connection String URI Format](https://docs.mongodb.com/manual/reference/connection-string/#connection-string-uri-format)
+
+* a `database` string option is given during the plugin registration.
+* the connection string contains the database name. See the [Connection String URI Format](https://docs.mongodb.com/manual/reference/connection-string/#connection-string-uri-format)
 
 A `name` option can be used to connect to multiple MongoDB clusters.
 
@@ -126,8 +129,9 @@ fastify.get('/', function (req, res) {
 ## Acknowledgments
 
 This project is kindly sponsored by:
-- [nearForm](https://nearform.com)
-- [LetzDoIt](https://www.letzdoitapp.com/)
+
+* [nearForm](https://nearform.com)
+* [LetzDoIt](https://www.letzdoitapp.com/)
 
 ## License
 
