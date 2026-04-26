@@ -73,11 +73,6 @@
     "fastify-plugin": "^5.0.0",
     "mongodb": "^7.0.0"
   },
-  "tstyche": {
-    "testFileMatch": [
-      "types/*.tst.ts"
-    ]
-  },
   "publishConfig": {
     "access": "public"
   }

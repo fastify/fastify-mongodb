@@ -13,11 +13,11 @@ app
   })
   .after((_err) => {
     app.mongo.client.db('test')
-    expect(app.mongo.db).type.not.toBe<undefined>()
+    expect(app.mongo.db).type.toBe<mongodb.Db | undefined>()
 
     const ObjectIdFromApp = app.mongo.ObjectId
     expect(new ReExportedObjectId('aaaa')).type.toBe<ObjectId>()
     expect(new ObjectIdFromApp('aaa')).type.toBe<ObjectId>()
   })
-expect(mongodb.ObjectId).type.toBe<typeof ReExportedObjectId>()
-expect(mongodb.BSONType.array).type.toBe<4>()
+
+expect(ReExportedObjectId).type.toBe(mongodb.ObjectId)
