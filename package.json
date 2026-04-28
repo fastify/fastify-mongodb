@@ -11,7 +11,7 @@
     "lint:fix": "eslint --fix",
     "mongo": "docker run --rm -d -p 27017:27017 mongo:8.0.0",
     "test": "npm run test:unit && npm run test:typescript",
-    "test:typescript": "tsd",
+    "test:typescript": "tstyche",
     "test:unit": "c8 --100 node --test"
   },
   "repository": {
@@ -67,7 +67,7 @@
     "eslint": "^9.17.0",
     "fastify": "^5.0.0",
     "neostandard": "^0.13.0",
-    "tsd": "^0.33.0"
+    "tstyche": "^7.1.0"
   },
   "dependencies": {
     "fastify-plugin": "^5.0.0",
