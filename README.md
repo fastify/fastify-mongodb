@@ -101,7 +101,7 @@ const id = new ObjectId('some-id-here')
 The `db` property is added **only if**:
 
 * a `database` string option is given during the plugin registration.
-* the connection string contains the database name. See the [Connection String URI Format](https://docs.mongodb.com/manual/reference/connection-string/#connection-string-uri-format)
+* the connection string contains the database name. See the [Connection String URI Format](https://www.mongodb.com/docs/manual/reference/connection-string/?deployment-type=atlas&interface-atlas-only=atlas-cli)
 
 A `name` option can be used to connect to multiple MongoDB clusters.
 
@@ -131,7 +131,10 @@ fastify.get('/', function (req, res) {
 This project is kindly sponsored by:
 
 * [nearForm](https://nearform.com)
-* [LetzDoIt](https://www.letzdoitapp.com/)
+
+Past sponsors:
+
+- LetzDoIt
 
 ## License
 
